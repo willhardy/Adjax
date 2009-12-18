@@ -19,6 +19,7 @@ class JsonResponse(HttpResponse):
         super(JsonResponse, self).__init__(
             content, content_type='application/json')
 
+from django.conf import settings
 DEFAULT_REDIRECT = getattr(settings, 'ADJAX_DEFAULT_REDIRECT', None)
 
 from django.shortcuts import redirect
