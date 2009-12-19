@@ -8,13 +8,22 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.utils import simplejson
 
+from django.utils.functional import Promise 
+from django.utils.encoding import force_unicode 
+
+class LazyEncoder(json.DjangoJSONEncoder): 
+    def default(self, obj): 
+        if isinstance(obj, Promise): 
+            return force_unicode(obj) 
+        return obj 
+
 class JsonResponse(HttpResponse):
     def __init__(self, object):
         if isinstance(object, QuerySet):
             content = serialize('json', object)
         else:
             content = simplejson.dumps(
-                object, indent=2, cls=json.DjangoJSONEncoder,
+                object, indent=2, cls=LazyEncoder,
                 ensure_ascii=False)
         super(JsonResponse, self).__init__(
             content, content_type='application/json')
