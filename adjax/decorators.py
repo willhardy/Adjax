@@ -15,7 +15,7 @@ class LazyEncoder(json.DjangoJSONEncoder):
     def default(self, obj): 
         if isinstance(obj, Promise): 
             return force_unicode(obj) 
-        return obj 
+        return super(LazyEncoder, self).default(obj)
 
 class JsonResponse(HttpResponse):
     def __init__(self, object):
