@@ -55,5 +55,7 @@ def render_to_json(func):
                 return redirect(DEFAULT_REDIRECT)
             else:
                 return HttpResponse()
+        elif output is None:
+            return HttpResponse()
         return output
     return wrapper

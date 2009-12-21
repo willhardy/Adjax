@@ -13,24 +13,36 @@ jQuery.adjax_callbacks = {
     show_error_message: function(message) { jQuery.adjax_callbacks.show_notification(message); },
     }
 
-process_form_errors = function(errors) {
+form_processor_factory = function(form_obj) {
+  if (!form_obj) { form_obj = jQuery; }
+
+  process_form_errors = function(response) {
+    var json = JSON.parse(response);
+    /* Process the json, like links do */
+    process_json_response(json);
+    var errors = json.form_errors
+
     /* Remove all preexisting error messages */
-    jQuery('.errorlist').remove();
-    jQuery('.error').removeClass('error');
+    form_obj.find('.errorlist').remove();
+    form_obj.find('.error').removeClass('error');
     for (error in errors) {
-        var obj = jQuery('#id_'+error);
-        obj.addClass('error');
+        /* Generate the error message html */
         var html = '<ul class="errorlist">';
         for (msg in errors[error]) { html += '<li>'+errors[error][msg]+'</li>'; }
         html += '</ul>';
-        obj.after(html);
+        /* Attach the messages somewhere and add classes */
+        if (error == '__all__') {
+            var obj = form_obj;
+            obj.prepend(html); }
+        else {
+            var obj = form_obj.find('#id_'+error);
+            obj.addClass('error');
+            obj.after(html); }
         }
     }
+    return process_form_errors
+  }
 
-process_form_response = function(response) {
-    var json = JSON.parse(response);
-    process_json_response(json);
-    }
 
 /* Function to process json response */
 process_json_response = function(json) {
@@ -42,12 +54,18 @@ process_json_response = function(json) {
     if (json.notifications) { for ( var notification in json.notifications) { jQuery.adjax_callbacks.show_notification(notification); } }
     if (json.messages) { for ( var message in json.messages) { jQuery.adjax_callbacks.show_message(message); } }
     if (json.errors) { for ( var error in json.errors) { jQuery.adjax_callbacks.show_error_message(error); } }
-    process_form_errors(json.form_errors);
     /* if (json.form_errors) { process_form_errors(json.form_errors); } */
     /* If any update data have been provided, update the relevant elements */
     if (json.replace) {
         for (index in json.replace) {
-            jQuery('#'+index).html(json.replace[index]);
+            jQuery('#'+index).html(json.replace[index]).show();
+            }
+        /* If a function is defined for document.ready, reapply that. */
+        if (document_ready) { document_ready() }
+        }
+    if (json.hide) {
+        for (element in json.hide) {
+            jQuery('#'+element).hide();
             }
         }
     if (json.data) {
@@ -73,17 +91,16 @@ jQuery.fn.adjax = function(data) {
         if (jQuery(this).attr('href')) {
             var url = jQuery(this).attr('href').split("?")[0];
             jQuery.adjax(url, data);
-            /* Return false to prevent any links from being followed */
             return false;
         } else if (jQuery(this).attr('action')) {
-            /* TODO attach our callback */
-            jQuery(this).ajaxSubmit(process_json_response);
+            var form_processor = form_processor_factory(obj)
+            jQuery(this).ajaxSubmit(form_processor);
             return false;
         }
         });
 
-    /* Return object to allow chaining */
-    return jQuery(this);  
+    /* Return false to avoid the link being followed or form submitted */
+    return false;
     }
 
 /* Automatically take a clickable object, doing an ajax call on click. */
@@ -94,7 +111,8 @@ jQuery.fn.adjaxify = function(data) {
             obj.click(function() { return obj.adjax(); });
             }
         else if (obj.attr('action')) {
-            obj.ajaxForm(process_form_response);
+            var form_processor = form_processor_factory(obj)
+            obj.ajaxForm(form_processor);
             }
         });
     }
