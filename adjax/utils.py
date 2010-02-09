@@ -17,6 +17,6 @@ def get_key(instance, field_name):
     """ Returns the key that will be used to identify dynamic fields in the DOM. """
     # TODO: Avoid any characters that may not appear in class names
     m = instance._meta
-    return '.' + '-'.join(('data', m.app_label, m.object_name, str(instance.pk), field_name))
+    return '-'.join(('data', m.app_label, m.object_name, str(instance.pk), field_name))
 
 

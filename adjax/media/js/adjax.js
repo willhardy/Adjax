@@ -72,7 +72,7 @@ process_json_response = function(json) {
         }
     if (json.data) {
         for (index in json.data) {
-            jQuery(index).html(json.data[index]);
+            jQuery("." + index).html(json.data[index]);
             }
         }
     }
