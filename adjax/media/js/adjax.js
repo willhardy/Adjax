@@ -46,6 +46,8 @@ form_processor_factory = function(form_obj) {
 
 /* Function to process json response */
 process_json_response = function(json) {
+    /* Process any redirection first */
+    if (json.redirect) { window.location.replace(json.redirect); }
     /* Process single notifications, messages and errors */
     if (json.notification) { jQuery.adjax_callbacks.show_notification(json.notification); }
     if (json.message) { jQuery.adjax_callbacks.show_message(json.message); }
@@ -58,19 +60,19 @@ process_json_response = function(json) {
     /* If any update data have been provided, update the relevant elements */
     if (json.replace) {
         for (index in json.replace) {
-            jQuery('#'+index).html(json.replace[index]).show();
+            jQuery(index).html(json.replace[index]).show();
             }
         /* If a function is defined for document.ready, reapply that. */
         if (document_ready) { document_ready() }
         }
     if (json.hide) {
         for (element in json.hide) {
-            jQuery('#'+element).hide();
+            jQuery(element).hide();
             }
         }
     if (json.data) {
         for (index in json.data) {
-            jQuery('.'+index).html(json.data[index]);
+            jQuery(index).html(json.data[index]);
             }
         }
     }
