@@ -1,7 +1,6 @@
 /* The following three functions can, and maybe should be overwritten with custom functions for a particular site. */
-
 /* Display the given message as a notification (passive non-vital information) */
-jQuery.adjax_callbacks = { 
+jQuery.adjax_callbacks = {
     show_notification: function(message) {
         msg_content = jQuery('<div class="notification"><p>'+message+'</p></div>')
         msg_content.slideDown('slow').wait(2000).slideUp('slow')
@@ -60,11 +59,13 @@ process_json_response = function(json) {
     /* If any update data have been provided, update the relevant elements */
     if (json.replace) {
         for (index in json.replace) {
+            // TODO: Need to determine whether it is a class or an id. For now i'm passing this in the DJANGO code itself.
             jQuery(index).html(json.replace[index]).show();
             }
         /* If a function is defined for document.ready, reapply that. */
-        if (document_ready) { document_ready() }
+        if (json.document_ready) { document_ready() }
         }
+
     if (json.hide) {
         for (element in json.hide) {
             jQuery(element).hide();
@@ -76,7 +77,6 @@ process_json_response = function(json) {
             }
         }
     }
-
 /* Call a url that is served by an adjax decorated view */
 jQuery.adjax = function(url, data) {
     jQuery.getJSON(url, data, process_json_response);
@@ -84,7 +84,7 @@ jQuery.adjax = function(url, data) {
     return false;
     }
 
-/* Make an ajax call (immediately) to the given url or object's href 
+/* Make an ajax call (immediately) to the given url or object's href
  * attribute, or post to the form's target.
  * USAGE:   $('#vote').adjax()
  */
@@ -121,9 +121,8 @@ jQuery.fn.adjaxify = function(data) {
 
 
 /* Convenient function to get objects to pause/wait for certain amount of time. */
-jQuery.fn.wait = function(time) { 
-    var obj = jQuery(this); 
+jQuery.fn.wait = function(time) {
+    var obj = jQuery(this);
     obj.queue(function() { setTimeout(function() {obj.dequeue();}, time); });
     return obj;
     };
-
