@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Adjax is Ajax for Django</h2>
+    <p>Adjax is a small framework to streamline the building of ajax-based sites using the <a href="http://www.djangoproject.com/">Django web development framework</a>. </p>
+    <p>The library can be used:</p>
+    <ul>
+      <li>in Django views to explicitly update html elements, display messages.</li>
+      <li>in Django templates to mark values as being updatable</li>
+      <li>in unobtrusive Javascript to turn links and forms into ajax request triggers </li>
+    </ul>
+
+    <h2>The gory details</h2>
+    <p>Adjax looks to keep the development of common ajax tasks more organised and clean. As much as possible, ajax functionality is defined in Django views, javascript is kept unobtrusive (defined in linked files) and the developer has full freedom over the HTML produced by the system.</p>
+    <p>Adjax's mostly attainable goals are:</p>
+    <ul>
+      <li>Help developers Don't Repeat Themselves</li>
+      <li>Provide a straightforward, consistent predictable API</li>
+      <li>Automate as much as possible</li>
+      <li>Graceful degredation, full functionality without javascript</li>
+      <li>Allow developers to define program functionality completely within the view</li>
+      <li>Allow developers to easily install completely customised HTML/CSS/javascript</li>
+      <li>Allow developers to use different javascript frameworks (ie other than jQuery)</li>
+    </ul>
+    <p>Have a <a href="{% url how %}">look at the API</a> to see if it implements these goals, and is useful for you.</p>
+
+    <h2>What else is there</h2>
+    <ul>
+      <li><a href="http://www.dajaxproject.com/">dajax</a>: A new and comprehensive ajax framework, with more support and maintenance than Adjax currently has. API isn't as clean and straightforward but much better documented, with examples.</li>
+      <li><a href="http://github.com/alex/django-ajax-validation">django-ajax-validation</a>: A simple project targetting form validation, and doing it reasonably well and cleanly. Basic documentation (there isn't much to document anyway) and sporatic support.</li>
+      <li>Roll your own: In some cases, comprehensive ajax functionality is unnecessary. If you need to update a section of a page, try using an include template and letting your view take an argument to render just the included template instead of the entire page. This is also an especially attractive option if you have specific requirements or don't lie the opinions/design decisions made by the available frameworks (<a href="http://code.google.com/p/django-adjax/issues/entry">please tell me!</a>).</li>
+{% endblock %}

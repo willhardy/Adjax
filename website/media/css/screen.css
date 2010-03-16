@@ -1,0 +1,170 @@
+/*-------
+// global reset
+//-----*/
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+ol, ul { list-style: none; }
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+:focus { outline: 0; }
+table { border-spacing: 0; }
+acronym { cursor: help; }
+
+
+/* Style */    
+
+body { 
+    background: #e0f8ea; 
+    color: #222; 
+    width: 980px; 
+    margin: 20px auto;
+    font-family: sans-serif;
+    }
+
+h1 a { 
+    display: block;
+    background: url(img/logo.png); 
+    height: 140px; 
+    width: 240px; 
+    margin: 0 auto;
+    }
+    h1 span {display: none; }
+h2 {
+    margin: 40px 0 10px 0;
+    font-size: 110%;
+    }
+
+#navigation { 
+    margin-bottom: 40px; 
+    text-align: center; }
+    #navigation li { 
+        display: inline; 
+        font-size: 180%; 
+        font-family: "Tin Doghouse";
+        font-style: italic;
+        }
+        #navigation li a { 
+            padding: 5px 35px; 
+            text-decoration: none; 
+            color: #86a594; }
+        #navigation li.active a, #navigation li a:hover { color: #032; }
+
+#content {
+    background: white;
+    padding: 20px;
+    overflow: hidden;
+    position: relative;
+    margin: 50px auto 0 auto;
+    border: 1px solid #bfd8c9;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    padding-bottom: 50px;
+    }
+
+    #content ul {
+        list-style: disc;
+        padding-left: 40px;
+        }
+        #content p { margin: 5px 0; }
+        #content li { margin: 4px 0; }
+        #content pre { margin: 20px 0 20px 20px; font-size: 120%; background: #f8f8f8; border: 1px solid #e8e8e8; padding: 10px; }
+        #content #code pre { margin: 0; font-size: 85%; background: none; }
+
+pre { font-size: 85%; }
+    pre span.fade { 
+        color: #eee; 
+        /* Simulate a blur with bold and a 1px text shadow*/
+        font-weight: bold; text-shadow: #eee 1px 1px;
+        }
+
+div.file { 
+    width: 48%;
+    float: left; 
+    margin: 3px; 
+    padding: 5px; 
+    }
+
+hr { clear: both; color: transparent; height: 0px; border: none;}
+
+#code { 
+    padding: 10px; 
+    margin: 30px 0; 
+    position: relative;
+    }
+    #code p { 
+        margin-bottom: 5px; 
+        font-style: italic; 
+        font-family: georgia; 
+        color: #234f32;  
+        }
+#features {
+    }
+#content ul#feature-navigation {
+    margin: 20px auto;
+    width: 910px;
+    padding: 0px;
+        }
+    #feature-navigation li {
+        list-style: none;
+        border: 1px solid #ddd;
+        padding: 5px;
+        float: left;
+        width: 280px;
+        height: 80px;
+        background: #eee;
+        margin: 5px;
+        text-align: center;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        }
+        #feature-navigation li.hover { cursor: pointer; background: #ddd; }
+        #feature-navigation li#feature-all { width: 885px; height: auto; }
+        #feature-navigation li.active {     
+            border-color: #234f32; 
+            background: #ddd; 
+            background: #bdcac2; 
+            }
+        #feature-navigation li h3 {
+            padding: 5px;
+            margin: -5px;
+            margin-bottom: 5px;
+            background: #ccc; 
+            }
+        #feature-navigation li.hover h3 {
+            background: #aaa; 
+            }
+        #feature-navigation li.active h3 {
+            background: #234f32; 
+            color: white;
+            }
+        #feature-navigation li p { font-size: 85%; }
+    .file p span { 
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            background: #234f32; 
+            color: white;
+            margin-right: 5px;
+            padding: 4px 2px 3px 5px;
+            font-family: sans-serif; 
+            font-style: normal;
+            }
+    
+#footer { padding: 60px 0 20px 0; position: relative; }
+    #footer .attribution { position: absolute; right: 0; }
+#footer .attribution a {
+    display: block; 
+    background: url(img/hardysoftware.png) transparent 0 0 no-repeat;
+    height: 46px; width: 228px;
+    margin-bottom: 20px; 
+    }
+    #footer .attribution a:hover {
+        background: url(img/hardysoftware.png) transparent 0 -46px no-repeat;
+        }
+    #footer .attribution a span { display: none; }
