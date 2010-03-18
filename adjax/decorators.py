@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-__all__ = ('render_to_json')
+__all__ = ('adjax_response',)
+
+from django.http import HttpResponse
+from django.shortcuts import render_to_response, redirect
+from django.template import RequestContext
+from django.conf import settings
 
 from django.core.serializers import json, serialize
-from django.db.models.query import QuerySet
-from django.http import HttpResponse
-from django.utils import simplejson
 
+from adjax.utils import get_store
 from django.utils.functional import Promise 
 from django.utils.encoding import force_unicode 
 
@@ -28,34 +31,51 @@ class JsonResponse(HttpResponse):
         super(JsonResponse, self).__init__(
             content, content_type='application/json')
 
-from django.conf import settings
+# Where to redirect to when view is called without an ajax request.
 DEFAULT_REDIRECT = getattr(settings, 'ADJAX_DEFAULT_REDIRECT', None)
+ADJAX_CONTEXT_KEY = 'adjax'
 
-from django.shortcuts import redirect
 
-def render_to_json(func):
+def adjax_response(func):
     """ Renders the response using JSON, if appropriate.
     """
+    # TODO allow a template to be given for non-ajax requests
+    template_name = None
+
     def wrapper(request, *args, **kw):
         output = func(request, *args, **kw)
+        store = get_store(request)
+
+        # If a dict is given, add that to the output
+        if output is None:
+            output = {}
+        elif isinstance(output, dict):
+            output = output.copy()
+            output.pop('request', None)
+            for key, val in output.items():
+                store.extra(key, val)
+
+        # Intercept redirects
+        elif isinstance(output, HttpResponse) and output.status_code in (301, 302):
+            store.redirect(output['Location'])
+
+        if request.is_ajax():
+            return store.json_response
+
         if isinstance(output, dict):
-            # Do not redirect AJAX calls
-            if request.META.get('HTTP_X_REQUESTED_WITH', None) == 'XMLHttpRequest':
-                # Remove request if given, we are using the one given in the input 
-                output = output.copy()
-                output.pop('request', None)
-                return JsonResponse(output)
+            # If we have a template, render that
+            if template_name:
+                output.setdefault(ADJAX_CONTEXT_KEY, store)
+                return render_to_response(template_name, output, context_instance=RequestContext(request))
 
-            referer = request.META.get('HTTP_REFERER', None)
-            if referer:
-                return redirect(referer)
-
-            # TODO: Convert this to try ... except
-            if DEFAULT_REDIRECT:
+            # Try and redirect somewhere useful
+            if 'HTTP_REFERER' in request.META:
+                return redirect(request.META['HTTP_REFERER'])
+            elif DEFAULT_REDIRECT:
                 return redirect(DEFAULT_REDIRECT)
             else:
                 return HttpResponse()
-        elif output is None:
-            return HttpResponse()
+
         return output
+
     return wrapper
