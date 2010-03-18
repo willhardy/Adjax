@@ -1,17 +1,20 @@
 /* The following three functions can, and maybe should be overwritten with custom functions for a particular site. */
-/* Display the given message as a notification (passive non-vital information) */
 jQuery.adjax_callbacks = {
-    show_notification: function(message) {
-        msg_content = jQuery('<div class="notification"><p>'+message+'</p></div>')
-        msg_content.slideDown('slow').wait(2000).slideUp('slow')
-        jQuery('#content').prepend(msg_content);
+    /* Display the given message as a notification (passive non-vital information) */
+    show_message: function(message) {
+        msg_html = jQuery('<p class="message '+message.tags+'">'+message.content+'</p>');
+        msg_html.slideDown('slow');
+        if (message.level < 40) { msg_html.wait(2000).slideUp('slow') }
+        jQuery('#messages').prepend(msg_html);
         },
-    /* Display the given message as a message (important information that the user must see, ie popup) */
-    show_message: function(message) { jQuery.adjax_callbacks.show_notification(message); },
-    /* Display the given message as an error message (attempted action unsuccessful) */
-    show_error_message: function(message) { jQuery.adjax_callbacks.show_notification(message); },
     }
 
+
+/* This factory generates a speical processor for handling form responses 
+   It is currently hardwired to handle Djangos standard form html.
+   TODO: Allow this to be overridden.
+   TODO: How are multiple forms handled?
+*/
 form_processor_factory = function(form_obj) {
   if (!form_obj) { form_obj = jQuery; }
 
@@ -43,34 +46,32 @@ form_processor_factory = function(form_obj) {
   }
 
 
-/* Function to process json response */
+/* Function to process json response. This is the main switchboard, routing the
+   specific top-level json items to handler functions. 
+*/
 process_json_response = function(json) {
     /* Process any redirection first */
+    /* TODO, recognise 3XX responses and redirect the entire window (may be impossible with js/jQuery) */
     if (json.redirect) { window.location.replace(json.redirect); }
     /* Process single notifications, messages and errors */
-    if (json.notification) { jQuery.adjax_callbacks.show_notification(json.notification); }
-    if (json.message) { jQuery.adjax_callbacks.show_message(json.message); }
-    if (json.error) { jQuery.adjax_callbacks.show_error_message(json.error); }
-    /* Process series of notifications, messages and errors */
-    if (json.notifications) { for ( var notification in json.notifications) { jQuery.adjax_callbacks.show_notification(notification); } }
-    if (json.messages) { for ( var message in json.messages) { jQuery.adjax_callbacks.show_message(message); } }
-    if (json.errors) { for ( var error in json.errors) { jQuery.adjax_callbacks.show_error_message(error); } }
-    /* if (json.form_errors) { process_form_errors(json.form_errors); } */
+    if (json.messages) { for (var message in json.messages) { jQuery.adjax_callbacks.show_message(json.messages); } }
     /* If any update data have been provided, update the relevant elements */
     if (json.replace) {
         for (index in json.replace) {
             // TODO: Need to determine whether it is a class or an id. For now i'm passing this in the DJANGO code itself.
             jQuery(index).html(json.replace[index]).show();
             }
-        /* If a function is defined for document.ready, reapply that. */
+        /* If a function is defined for document.ready, reapply that.  TODO: Document this feature. */
         if (json.document_ready) { document_ready() }
         }
 
+    /* Hide any elements listed here */
     if (json.hide) {
         for (element in json.hide) {
             jQuery(element).hide();
             }
         }
+    /* Replace content for elements with the given class (handled by ) */
     if (json.data) {
         for (index in json.data) {
             jQuery("." + index).html(json.data[index]);
