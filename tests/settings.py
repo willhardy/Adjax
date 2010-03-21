@@ -2,7 +2,7 @@
 
 import os
 
-PROJECT_DIR = os.path.join(os.path.dirname(__file__), "..")
+PROJECT_DIR = os.path.dirname(__file__)
 project_dir = lambda p: os.path.join(PROJECT_DIR, p)
 
 DEBUG = True

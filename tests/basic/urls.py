@@ -15,4 +15,5 @@ urlpatterns = patterns('tests.basic.views',
     url(r'^extra_2/$', 'extra_2',  name="extra_2"),
     url(r'^do_everything/$', 'do_everything',  name="do_everything"),
     url(r'^do_nothing/$', 'do_nothing',  name="do_nothing"),
+    url(r'^$', 'demo',  name="demo"),
 )

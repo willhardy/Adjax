@@ -28,7 +28,7 @@ def messages(request):
 @adjax.adjax_response
 def update(request):
     """ Update a django object """
-    my_obj = MyModel.objects.create(name="Abc", color="blue", price=123)
+    my_obj = MyModel(name="Abc", color="blue", price=123)
     adjax.update(request, my_obj, ('name', 'color'))
 
 from django import forms
@@ -40,7 +40,12 @@ class MyForm(forms.ModelForm):
 @adjax.adjax_response
 def forms(request):
     """ Display form validation errors. """
-    my_form = MyForm({'name': "Blah", 'price': "123"}) # color missing!
+    if request.method == "POST":
+        my_form = MyForm(request.POST, prefix="withprefix")
+        if my_form.is_valid():
+            adjax.redirect(request, 'do_nothing')
+    else:
+        my_form = MyForm({'name': "Blah", 'price': "123"}, prefix="withprefix") # color missing!
     adjax.form(request, my_form)
    
 @adjax.adjax_response
@@ -75,9 +80,9 @@ def do_everything(request):
     adjax.warning(request, "This is your first warning")
     adjax.error(request, "This is your first error")
     adjax.debug(request, "This is your first debug")
-    my_obj = MyModel.objects.create(name="Abc", color="blue", price=123)
+    my_obj = MyModel(name="Abc", color="blue", price=123)
     adjax.update(request, my_obj, ('name', 'color'))
-    my_form = MyForm({'name': "ABC", 'price': 123})
+    my_form = MyForm({'name': "ABC", 'price': 123}, prefix="withprefix")
     adjax.form(request, my_form)
     adjax.redirect(request, 'do_nothing')
     adjax.extra(request, 'two', 234)
@@ -89,3 +94,13 @@ def do_nothing(request):
     """
     from django.http import HttpResponse
     return HttpResponse()
+
+def demo(request):
+    """ This view provides a demonstration page for Adjax.
+    """
+    context = {}
+    context['form'] = MyForm(prefix="withprefix")
+    context['my_obj'] = MyModel(name="Tree", color="green", price=899)
+    from django.shortcuts import render_to_response
+    from django.template.context import RequestContext
+    return render_to_response('demo.html', context, context_instance=RequestContext(request))

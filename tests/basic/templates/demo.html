@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load ajax %}
+
+{% block content %}
+<h2>Ajax demonstration</h2>
+
+<p>This page is a demonstration of Adjax's features, letting you see each of the feature in action and providing reference code.</p>
+
+<ul id="demo-features">
+  <li><h3>User notifications</h3>
+  <div id="messages"></div>
+  <a class="update" href="{% url messages %}">Messages!</a></li>
+
+  <li><h3>Value updates</h3>
+  <p>My name is {% ajax my_obj.name %}.</p>
+  <a class="update" href="{% url update %}">Update!</a></li>
+
+  <li><h3>Form submission and validation</h3>
+  <form action="{% url forms %}" method="post">{{ form.as_p }}
+  <p>{% csrf_token %}<input type="submit" /></p></form></li>
+
+  <li><h3>Replace HTML content</h3>
+  <p id="abc">waiting waiting</p>
+  <a class="update" href="{% url replace %}">Replace!</a></li>
+
+  <li><h3>Hide HTML content</h3>
+  <p id="xyz">Goodbye world</p>
+  <a class="update" href="{% url hide %}">Hide!</a></li>
+
+  <li><h3>Browser redirects</h3>
+  <p>Move on?</p>
+  <a class="update" href="{% url redirect %}">Redirect!</a></li>
+
+{% endblock content %}
+
+{% block javascript %}
+  <script type="text/javascript">
+    $('form').adjaxify();
+    $('.update').adjaxify();
+  </script>
+{% endblock %}

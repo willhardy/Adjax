@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="content-language" content="en-AU" />
+  <title>Adjax demonstration</title>
+  <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/css/screen.css" media="screen" />
+</head>
+<body>
+<h1><a href="/"><span>Adjax</span></a></h1>
+
+<div id="content">
+{% block content %}
+{% endblock %}
+</div>
+
+<div id="footer">
+<p class="attribution"><a href="http://hardysoftware.com.au/"><span>Hardy Software</span></a></p>
+</div>
+  
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.min.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.form.js"></script>
+  <script type="text/javascript" src="{{ MEDIA_URL }}js/adjax.js"></script>
+  {% block javascript %}
+  {% endblock %}
+
+</body>
+</html>
+

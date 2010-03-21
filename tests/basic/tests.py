@@ -42,9 +42,10 @@ class BasicTests(TestCase):
     def test_update(self):
         data = self.get_view('update')
         assert 'update' in data, repr(data)
-        name_key = get_key(MyModel.objects.get(), 'name')
-        color_key = get_key(MyModel.objects.get(), 'color')
-        price_key = get_key(MyModel.objects.get(), 'price')
+        model = MyModel(name="Abc", color="blue")
+        name_key = get_key(model, 'name')
+        color_key = get_key(model, 'color')
+        price_key = get_key(model, 'price')
         update_dict = data['update']
         assert price_key not in update_dict
         try:
@@ -56,8 +57,8 @@ class BasicTests(TestCase):
     def test_forms(self):
         data = self.get_view('forms')
         assert 'forms' in data, repr(data)
-        assert 'id_color' in data['forms'], repr(data)
-        self.assertEqual(data['forms']['id_color'][0], u"This field is required.")
+        assert 'id_withprefix-color' in data['forms'], repr(data)
+        self.assertEqual(data['forms']['id_withprefix-color'][0], u"This field is required.")
 
     def test_redirect(self):
         data = self.get_view('redirect')
@@ -103,9 +104,10 @@ class BasicTests(TestCase):
             assert message['content'].startswith(u"This is your first "), message
             assert message['content'].endswith(message['tags']), message
         # update
-        name_key = get_key(MyModel.objects.get(), 'name')
-        color_key = get_key(MyModel.objects.get(), 'color')
-        price_key = get_key(MyModel.objects.get(), 'price')
+        model = MyModel(name="Abc", color="blue")
+        name_key = get_key(model, 'name')
+        color_key = get_key(model, 'color')
+        price_key = get_key(model, 'price')
         update_dict = data['update']
         assert price_key not in update_dict
         try:
@@ -114,8 +116,8 @@ class BasicTests(TestCase):
         except KeyError:
             self.fail(repr(update_dict))
         # forms
-        assert 'id_color' in data['forms'], repr(data)
-        self.assertEqual(data['forms']['id_color'][0], u"This field is required.")
+        assert 'id_withprefix-color' in data['forms'], repr(data)
+        self.assertEqual(data['forms']['id_withprefix-color'][0], u"This field is required.")
         # redirect
         self.assertEqual(data['redirect'], reverse('do_nothing'))
         # extra
