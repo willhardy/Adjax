@@ -1,6 +1,6 @@
 
 from adjax.decorators import adjax_response
-from adjax.utils import get_store
+from adjax.base import get_store
 
 # The following functions are mirrored for convenience and unity
 from django.contrib.messages import success, info, warning, error, debug

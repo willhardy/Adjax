@@ -3,9 +3,12 @@ jQuery.adjax_callbacks = {
     /* Display the given message as a notification (passive non-vital information) */
     show_message: function(message) {
         msg_html = jQuery('<p class="message '+message.tags+'">'+message.content+'</p>');
-        msg_html.slideDown('slow');
-        if (message.level < 40) { msg_html.wait(2000).slideUp('slow') }
+        // Show the messages by sliding down.
+        msg_html.hide();
         jQuery('#messages').prepend(msg_html);
+        msg_html.slideDown('slow');
+        // Hide unimportant messages after a few seconds
+        if (message.level < 40) { msg_html.wait(2000).slideUp('slow') }
         },
     }
 
@@ -22,7 +25,7 @@ form_processor_factory = function(form_obj) {
     var json = JSON.parse(response);
     /* Process the json, like links do */
     process_json_response(json);
-    var errors = json.form_errors
+    var errors = json.forms
 
     /* Remove all preexisting error messages */
     form_obj.find('.errorlist').remove();
@@ -37,7 +40,7 @@ form_processor_factory = function(form_obj) {
             var obj = form_obj;
             obj.prepend(html); }
         else {
-            var obj = form_obj.find('#id_'+error);
+            var obj = form_obj.find('#'+error);
             obj.addClass('error');
             obj.after(html); }
         }
@@ -52,9 +55,10 @@ form_processor_factory = function(form_obj) {
 process_json_response = function(json) {
     /* Process any redirection first */
     /* TODO, recognise 3XX responses and redirect the entire window (may be impossible with js/jQuery) */
-    if (json.redirect) { window.location.replace(json.redirect); }
+    // Redirect leaving an entry in the browser's history (ie back button)
+    if (json.redirect) { window.location.href = json.redirect; }
     /* Process single notifications, messages and errors */
-    if (json.messages) { for (var message in json.messages) { jQuery.adjax_callbacks.show_message(json.messages); } }
+    if (json.messages) { for (var msg in json.messages) { jQuery.adjax_callbacks.show_message(json.messages[msg]); } }
     /* If any update data have been provided, update the relevant elements */
     if (json.replace) {
         for (index in json.replace) {
@@ -68,13 +72,15 @@ process_json_response = function(json) {
     /* Hide any elements listed here */
     if (json.hide) {
         for (element in json.hide) {
-            jQuery(element).hide();
+            // TODO: Allow this functionality to be overridden, like message display
+            // to let developers eg fade or slide or display a message etc
+            jQuery(json.hide[element]).hide();
             }
         }
     /* Replace content for elements with the given class (handled by ) */
-    if (json.data) {
-        for (index in json.data) {
-            jQuery("." + index).html(json.data[index]);
+    if (json.update) {
+        for (index in json.update) {
+            jQuery("." + index).html(json.update[index]);
             }
         }
     }

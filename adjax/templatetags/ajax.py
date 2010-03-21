@@ -18,9 +18,10 @@ class DynamicValueNode(template.Node):
         self.object_name, self.field_name = object_name.rsplit(".", 1)
         self.instance = template.Variable(self.object_name)
         self.value = template.Variable(object_name)
+
     def render(self, context):
         instance = self.instance.resolve(context)
-        if hasattr(instance, '_meta') and instance.pk:
+        if hasattr(instance, '_meta'):
             return '<span class="%s">%s</span>' % (get_key(instance, self.field_name), self.value.resolve(context))
 
 register.tag('ajax', ajax)

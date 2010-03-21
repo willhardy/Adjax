@@ -10,7 +10,7 @@ from django.conf import settings
 
 from django.core.serializers import json, serialize
 
-from adjax.utils import get_store
+from adjax.base import get_store
 from django.utils.functional import Promise 
 from django.utils.encoding import force_unicode 
 
