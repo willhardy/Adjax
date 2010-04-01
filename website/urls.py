@@ -6,6 +6,7 @@ urlpatterns = patterns('django.views.generic.simple',
     url(r'^how/$', 'direct_to_template', {'template': 'how.html', 'extra_context': {'page': 'how'}}, name="how"),
     url(r'^where/$', 'direct_to_template', {'template': 'where.html', 'extra_context': {'page': 'where'}}, name="where"),
     url(r'^who/$', 'direct_to_template', {'template': 'who.html', 'extra_context': {'page': 'who'}}, name="who"),
+    (r'^demo/', include('basic.urls')),
 )
 
 from django.conf import settings

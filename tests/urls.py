@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
-    (r'^basic/', include('basic.urls')),
+    (r'^demo/', include('basic.urls')),
 )
 
 from django.conf import settings

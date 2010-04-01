@@ -22,7 +22,7 @@
           <pre>
 import adjax
     
-@adjax.render_to_json
+@adjax.adjax_response
 def my_view(request):
     <span class="feature-messages">adjax.warning(request, "This is your first warning")</span>
     <span class="feature-ajax">adjax.update(request, my_obj, ('name', 'color'))</span>
@@ -30,7 +30,7 @@ def my_view(request):
     <span class="feature-replace">adjax.replace(request, '#abc', 'Hello world')</span>
     <span class="feature-hide">adjax.hide(request, '#xyz')</span>
     <span class="feature-redirect">if reason_to_redirect:
-        return adjax.redirect('my_other_view')</span>
+        return adjax.redirect(request, 'my_other_view')</span>
     </pre>
         </div>
 

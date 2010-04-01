@@ -3,7 +3,7 @@
 
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('tests.basic.views',
+urlpatterns = patterns('basic.views',
     url(r'^replace/$', 'replace', name="replace"),
     url(r'^hide/$', 'hide', name="hide"),
     url(r'^messages/$', 'messages', name="messages"),

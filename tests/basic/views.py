@@ -103,4 +103,4 @@ def demo(request):
     context['my_obj'] = MyModel(name="Tree", color="green", price=899)
     from django.shortcuts import render_to_response
     from django.template.context import RequestContext
-    return render_to_response('demo.html', context, context_instance=RequestContext(request))
+    return render_to_response('basic/demo.html', context, context_instance=RequestContext(request))
