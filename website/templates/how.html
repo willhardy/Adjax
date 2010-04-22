@@ -10,10 +10,11 @@
       <ul id="feature-navigation">
         <li id="feature-messages"><h3>User notifications</h3><p>Push error, warning, information or debug messages to the user interface, integrating with Django's messages framework.</p></li>
         <li id="feature-ajax"><h3>Value updates</h3><p>Update values derived from models, with control over which values are exposed.</p></li>
-        <li id="feature-forms"><h3>Form submission and validation</h3><p>Submit form and display errors</p></li>
+        <li id="feature-forms"><h3>Form submission and validation</h3><p>Submit form and display errors.</p></li>
         <li id="feature-replace"><h3>Replace HTML content</h3><p>Explicitly replace HTML elements with any content.</p></li>
-        <li id="feature-hide"><h3>Hide HTML content</h3><p>Hide certain HTML elements</p></li>
-        <li id="feature-redirect"><h3>Browser redirects</h3><p>Force a browser redirect</p></li>
+        <li id="feature-hide"><h3>Hide HTML content</h3><p>Hide certain HTML elements.</p></li>
+        <li id="feature-redirect"><h3>Browser redirects</h3><p>Force a browser redirect.</p></li>
+        <li id="feature-template"><h3>Template include</h3><p>Include a template and update it.</p></li>
         <li id="feature-all"><p>Show all code</p></li>
       </ul>
       <hr/>
@@ -28,6 +29,7 @@ def my_view(request):
     <span class="feature-ajax">adjax.update(request, my_obj, ('name', 'color'))</span>
     <span class="feature-forms">adjax.form(request, my_form)</span>
     <span class="feature-replace">adjax.replace(request, '#abc', 'Hello world')</span>
+    <span class="feature-template">adjax.render_to_response(request, 'myapp/template.html', {'abc': 'Hello world'})</span>
     <span class="feature-hide">adjax.hide(request, '#xyz')</span>
     <span class="feature-redirect">if reason_to_redirect:
         return adjax.redirect(request, 'my_other_view')</span>
@@ -37,7 +39,8 @@ def my_view(request):
         <div class="file"><p><span></span>in your template</p>
           <pre><span class="feature-ajax">{% templatetag openblock %} load ajax {% templatetag closeblock %}</span>
 <span class="feature-messages">&lt;p id="messages"&gt;&lt;/p&gt;</span>
-<span class="feature-ajax">&lt;p&gt;My name is {% templatetag openblock %} ajax my_obj.name {% templatetag closeblock %}.&lt;/p&gt;</span>
+<span class="feature-ajax">&lt;p&gt;My name is {% templatetag openblock %} adjax my_obj.name {% templatetag closeblock %}.&lt;/p&gt;</span>
+<span class="feature-template">{% templatetag openblock %} adjax_include "myapp/template.html" {% templatetag closeblock %}</span>
 <span class="feature-forms">&lt;form&gt;{% templatetag openvariable %} form.as_p {% templatetag closevariable %}&lt;p&gt;&lt;input type="submit" /&gt;&lt;/p&gt;&lt;/form&gt;</span>
 <span class="feature-replace">&lt;p id="abc"&gt;waiting waiting&lt;/p&gt;</span>
 <span class="feature-hide">&lt;p id="xyz"&gt;Goodbye world&lt;/p&gt;</span>
