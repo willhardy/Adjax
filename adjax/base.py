@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
 from utils import get_key, JsonResponse, get_template_include_key
@@ -6,6 +5,7 @@ from django.contrib import messages
 from django.core import urlresolvers
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
+
 
 def get_store(request):
     """ Gets a relevant store object from the given request. """

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
 from django import template
@@ -6,7 +5,9 @@ from django.template.loader import get_template
 from adjax.utils import get_key, get_template_include_key
 from django.conf import settings
 
+
 register = template.Library()
+
 
 def adjax(parser, token):
     try:
@@ -15,7 +16,9 @@ def adjax(parser, token):
         raise template.TemplateSyntaxError, "%r tag requires a single argument" % token.contents.split()[0]
     return DynamicValueNode(object_name)
 
+
 class DynamicValueNode(template.Node):
+
     def __init__(self, object_name):
         self.object_name, self.field_name = object_name.rsplit(".", 1)
         self.instance = template.Variable(self.object_name)
@@ -25,6 +28,7 @@ class DynamicValueNode(template.Node):
         instance = self.instance.resolve(context)
         if hasattr(instance, '_meta'):
             return '<span class="%s">%s</span>' % (get_key(instance, self.field_name), self.value.resolve(context))
+
 
 def adjax_include(parser, token):
     bits = token.split_contents()
@@ -43,11 +47,14 @@ def adjax_include(parser, token):
 
     return AdjaxIncludeNode(template_name, **kwargs)
 
+
 class AdjaxIncludeNode(template.Node):
+
     def __init__(self, template_name, prefix=None, wrapper='"div"'):
         self.template_name = template.Variable(template_name)
         self.prefix = prefix and template.Variable(prefix) or None
         self.wrapper = template.Variable(wrapper)
+
 
     def render(self, context):
         template_name = self.template_name.resolve(context)

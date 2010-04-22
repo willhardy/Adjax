@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
 from django.core.serializers import json, serialize
@@ -13,11 +12,13 @@ except ImportError:
     import sha
     hash_function = sha.new
 
+
 def get_key(instance, field_name):
     """ Returns the key that will be used to identify dynamic fields in the DOM. """
     # TODO: Avoid any characters that may not appear in class names
     m = instance._meta
     return '-'.join(('data', m.app_label, m.object_name, str(instance.pk), field_name))
+
 
 def get_template_include_key(template_name, prefix=None):
     """ Get a valid element class name, we'll stick to ascii letters, numbers and hyphens.
