@@ -1,5 +1,5 @@
 # 
-# Adjax, a framework for easing the developer of Django websites with Ajax.
+# Adjax, a framework for easing the development of Django websites with Ajax.
 #
 
 __all__ = ('adjax_response', 'success', 'info', 'warning', 'error', 'debug', 

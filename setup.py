@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
 import ez_setup
@@ -11,9 +12,9 @@ setup(
     install_requires = ['django>=1.0'],
     author = "Will Hardy",
     author_email = "adjax@hardysoftware.com.au",
-    description = "",
+    description = "A framework for easing the development of Django sites with Ajax.",
     license = "New BSD",
-    keywords = "",
+    keywords = "ajax, django, framework",
     url = "http://adjax.hardysoftware.com.au/",
     package_data = {
         'adjax': ['media/js/*.js'],
