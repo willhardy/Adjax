@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-from utils import get_key, JsonResponse
+from utils import get_key, JsonResponse, get_template_include_key
 from django.contrib import messages
 from django.core import urlresolvers
+from django.template.context import RequestContext
+from django.template.loader import render_to_string
 
 def get_store(request):
     """ Gets a relevant store object from the given request. """
@@ -37,7 +39,7 @@ class AdjaxStore(object):
             self.update_data[get_key(obj, attr)] = value
 
     def form(self, form_obj):
-        """ Make form errors available. """
+        """ Validate the given form and send errors to browser. """
         if not form_obj.is_valid():
             for name, errors in form_obj.errors.items():
                 if form_obj.prefix:
@@ -63,6 +65,7 @@ class AdjaxStore(object):
         self.hide_data.append(element)
 
     def redirect(self, to, *args, **kwargs):
+        """ Redirect the browser dynamically to another page. """
         if hasattr(to, 'get_absolute_url'):
             self.redirect_data = to.get_absolute_url()
             return
@@ -82,7 +85,18 @@ class AdjaxStore(object):
 
 
     def extra(self, key, value):
+        """ Send additional information to the browser. """
         self.extra_data[key] = value
+
+    def render_to_response(self, template_name, dictionary=None, prefix=None, context_instance=None):
+        """ Update any included templates. """
+        # Because we have access to the request object, we can use request context
+        # This is not analogous to render_to_strings interface
+        if context_instance is None:
+            context_instance = RequestContext(self.request)
+        rendered_content = render_to_string(template_name, dictionary, context_instance=context_instance)
+        dom_element = ".%s" % get_template_include_key(template_name, prefix)
+        self.replace(dom_element, rendered_content)
 
     @property
     def json_response(self):

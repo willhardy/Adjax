@@ -12,7 +12,7 @@
   <a class="update" href="{% url messages %}">Messages!</a></li>
 
   <li><h3>Value updates</h3>
-  <p>My name is {% ajax my_obj.name %}.</p>
+  <p>My name is {% adjax my_obj.name %}.</p>
   <a class="update" href="{% url update %}">Update!</a></li>
 
   <li><h3>Form submission and validation</h3>
@@ -22,6 +22,12 @@
   <li><h3>Replace HTML content</h3>
   <p id="abc">waiting waiting</p>
   <a class="update" href="{% url replace %}">Replace!</a></li>
+
+  <li><h3>Include and replace template content</h3>
+  {% adjax_include "basic/_included.html" %}
+  {% adjax_include "basic/_included.html" prefix="tree" %}
+  {% adjax_include "basic/_included.html" wrapper="p" %}
+  <a class="update" href="{% url template_include_update %}">Update!</a></li>
 
   <li><h3>Hide HTML content</h3>
   <p id="xyz">Goodbye world</p>

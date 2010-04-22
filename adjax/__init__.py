@@ -25,18 +25,33 @@ def update(request, obj, attributes=None):
     store.update(obj, (a for a in attributes if not a.startswith("-")))
 
 def form(request, form_obj):
+    """ Validate the given form and send errors to browser. """
     get_store(request).form(form_obj)
 
 def replace(request, element, html):
+    """ Replace the given DOM element with the given html. 
+        The DOM element is specified using css identifiers.
+        Some javascript libraries may have an extended syntax, 
+        which can be used if you don't value portability.
+    """
     get_store(request).replace(element, html)
 
 def redirect(request, path):
+    """ Redirect the browser dynamically to another page. """
     get_store(request).redirect(path)
 
 def hide(request, element):
+    """ Hides the given DOM element.
+        The DOM element is specified using css identifiers.
+        Some javascript libraries may have an extended syntax, 
+        which can be used if you don't value portability.
+    """
     get_store(request).hide(element)
 
 def extra(request, key, value):
+    """ Send additional information to the browser. """
     get_store(request).extra(key, value)
 
-
+def render_to_response(request, template_name, context=None, prefix=None):
+    """ Update any included templates. """
+    get_store(request).render_to_response(template_name, context, prefix)

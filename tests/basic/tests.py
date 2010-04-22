@@ -9,7 +9,7 @@ from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
 
-from adjax.utils import get_key
+from adjax.utils import get_key, get_template_include_key
 from basic.models import MyModel
 
 class BasicTests(TestCase):
@@ -84,8 +84,44 @@ class BasicTests(TestCase):
         assert 'two' in data['extra'], repr(data['extra'])
         self.assertEqual(data['extra']['two'], 234)
 
+    def test_template_include_update(self):
+        """ Check the correct information is sent to the browser when updating
+            a template include. 
+        """
+        data = self.get_view('template_include_update')
+        assert 'replace' in data, repr(data)
+        key = ".%s" % get_template_include_key('basic/_included.html')
+        assert key in data['replace'], repr(data['replace'])
+        assert 'xyz123' in data['replace'][key]
+        key = ".%s" % get_template_include_key('basic/_included.html', prefix="tree")
+        assert key in data['replace'], repr(data['replace'])
+        assert 'mno456' in data['replace'][key]
+
+    def test_template_include_tag_1(self):
+        """ Checks that the template include tag correctly includes the given
+            templates.
+        """
+        response = self.client.get(reverse('template_include_tag'))
+        key = get_template_include_key('basic/_included.html')
+        self.assertContains(response, "13579")
+        self.assertContains(response, '<div class="%s"' % key)
+
+    def test_template_include_tag_2(self):
+        """ Checks that the template include tag can use a given element type.
+        """
+        response = self.client.get(reverse('template_include_tag'))
+        key = get_template_include_key('basic/_included.html')
+        self.assertContains(response, '<p class="%s"' % key)
+
+    def test_template_include_tag_3(self):
+        """ Checks that the template include tag can have a prefix.
+        """
+        response = self.client.get(reverse('template_include_tag'))
+        key = get_template_include_key('basic/_included.html', prefix="tree")
+        self.assertContains(response, '<div class="%s"' % key)
 
     def test_do_everything(self):
+        """ A quick check on the ability to use all functionality at once. """
         data = self.get_view('do_everything')
         assert 'replace' in data, repr(data)
         assert 'hide' in data, repr(data)
@@ -123,3 +159,10 @@ class BasicTests(TestCase):
         # extra
         self.assertEqual(data['extra']['one'], 123)
         self.assertEqual(data['extra']['two'], 234)
+        # template include
+        key = ".%s" % get_template_include_key('basic/_included.html')
+        assert key in data['replace'], repr(data['replace'])
+        assert 'xyz123' in data['replace'][key]
+        key = ".%s" % get_template_include_key('basic/_included.html', prefix="tree")
+        assert key in data['replace'], repr(data['replace'])
+        assert 'mno456' in data['replace'][key]

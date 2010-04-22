@@ -71,6 +71,17 @@ def extra_2(request):
     return {'one': 123}
 
 @adjax.adjax_response
+def template_include_update(request):
+    """ Replace rendered content with the output of a template. """
+    adjax.render_to_response(request, 'basic/_included.html', {'abc': 'xyz123'})
+    adjax.render_to_response(request, 'basic/_included.html', {'abc': 'mno456'}, prefix="tree")
+
+def template_include_tag(request):
+    """ Render a template that uses the template include tag. """
+    from django.shortcuts import render_to_response
+    return render_to_response('basic/template_includer.html', {'abc': '13579'})
+
+@adjax.adjax_response
 def do_everything(request):
     """ Putting everything together. """
     adjax.replace(request, '#abc', 'Hello world')
@@ -86,6 +97,8 @@ def do_everything(request):
     adjax.form(request, my_form)
     adjax.redirect(request, 'do_nothing')
     adjax.extra(request, 'two', 234)
+    adjax.render_to_response(request, 'basic/_included.html', {'abc': 'xyz123'})
+    adjax.render_to_response(request, 'basic/_included.html', {'abc': 'mno456'}, prefix="tree")
     return {'one': 123}
 
 def do_nothing(request):
@@ -101,6 +114,7 @@ def demo(request):
     context = {}
     context['form'] = MyForm(prefix="withprefix")
     context['my_obj'] = MyModel(name="Tree", color="green", price=899)
+    context['abc'] = "123 waiting 456"
     from django.shortcuts import render_to_response
     from django.template.context import RequestContext
     return render_to_response('basic/demo.html', context, context_instance=RequestContext(request))

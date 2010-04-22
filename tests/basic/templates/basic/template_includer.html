@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="author" content="" />
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta name="content-language" content="en-AU" />
+  <meta name="copyright" content="&copy; 2007 " />
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="screen.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="print.css" media="print" />
+</head>
+<body>
+{% load ajax %}
+
+{% adjax_include "basic/_included.html" %}
+{% adjax_include "basic/_included.html" prefix="tree" %}
+{% adjax_include "basic/_included.html" wrapper="p" %}
+  
+</body>
+</html>
