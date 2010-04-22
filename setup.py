@@ -9,6 +9,7 @@ setup(
     name = "Adjax",
     version = "1.0",
     packages = find_packages(exclude=["website*", "tests*", "design*"]),
+    url = 'http://adjax.hardysoftware.com.au/',
     install_requires = ['django>=1.0'],
     author = "Will Hardy",
     author_email = "adjax@hardysoftware.com.au",
