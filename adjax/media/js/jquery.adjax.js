@@ -13,7 +13,7 @@ jQuery.adjax_callbacks = {
     }
 
 
-/* This factory generates a speical processor for handling form responses 
+/* This factory generates a speical processor for handling form responses
    It is currently hardwired to handle Djangos standard form html.
    TODO: Allow this to be overridden.
    TODO: How are multiple forms handled?
@@ -21,8 +21,7 @@ jQuery.adjax_callbacks = {
 form_processor_factory = function(form_obj) {
   if (!form_obj) { form_obj = jQuery; }
 
-  process_form_errors = function(response) {
-    var json = JSON.parse(response);
+  process_form_errors = function(json) {
     /* Process the json, like links do */
     process_json_response(json);
     var errors = json.forms
@@ -50,7 +49,7 @@ form_processor_factory = function(form_obj) {
 
 
 /* Function to process json response. This is the main switchboard, routing the
-   specific top-level json items to handler functions. 
+   specific top-level json items to handler functions.
 */
 process_json_response = function(json) {
     /* Process any redirection first */
@@ -103,7 +102,7 @@ jQuery.fn.adjax = function(data) {
             return false;
         } else if (jQuery(this).attr('action')) {
             var form_processor = form_processor_factory(obj)
-            jQuery(this).ajaxSubmit(form_processor);
+            jQuery(this).ajaxSubmit({success:form_processor, dataType:'json'});
             return false;
         }
         });
@@ -121,7 +120,7 @@ jQuery.fn.adjaxify = function(data) {
             }
         else if (obj.attr('action')) {
             var form_processor = form_processor_factory(obj)
-            obj.ajaxForm(form_processor);
+            obj.ajaxForm({success:form_processor, dataType:'json'});
             }
         });
     }
