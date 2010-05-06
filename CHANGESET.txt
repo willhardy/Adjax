@@ -1,0 +1,7 @@
+
+1.0.1 Maintenance release   (May 2010)
+ * Fixed problems with some installations of jQuery 4 (Issue #1)
+ * Fixed setup.py install problems where easy_install is missing (Issue #2)
+ * Fixed javascript error in IE7 caused by stray comma 
+
+1.0 Initial Release   (April 2010)
