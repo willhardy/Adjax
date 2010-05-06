@@ -9,7 +9,7 @@ jQuery.adjax_callbacks = {
         msg_html.slideDown('slow');
         // Hide unimportant messages after a few seconds
         if (message.level < 40) { msg_html.wait(2000).slideUp('slow') }
-        },
+        }
     }
 
 
