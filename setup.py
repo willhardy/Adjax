@@ -10,7 +10,7 @@ except ImportError:
 from setuptools import setup, find_packages
 setup(
     name = "Adjax",
-    version = "1.0",
+    version = "1.0.1",
     packages = find_packages(exclude=["website*", "tests*", "design*"]),
     install_requires = ['django>=1.0'],
     author = "Will Hardy",
