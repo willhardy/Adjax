@@ -21,7 +21,7 @@ jQuery.adjax_callbacks = {
 form_processor_factory = function(form_obj) {
   if (!form_obj) { form_obj = jQuery; }
 
-  process_form_errors = function(json) {
+  return function(json) {
     /* Process the json, like links do */
     process_json_response(json);
     var errors = json.forms
@@ -36,15 +36,13 @@ form_processor_factory = function(form_obj) {
         html += '</ul>';
         /* Attach the messages somewhere and add classes */
         if (error == '__all__') {
-            var obj = form_obj;
-            obj.prepend(html); }
+            form_obj.prepend(html); }
         else {
-            var obj = form_obj.find('#'+error);
+            var obj = form_obj.find('#form-error-'+error, '#'+error);
             obj.addClass('error');
             obj.after(html); }
         }
     }
-    return process_form_errors
   }
 
 
@@ -114,14 +112,17 @@ jQuery.fn.adjax = function(data) {
 /* Automatically take a clickable object, doing an ajax call on click. */
 jQuery.fn.adjaxify = function(data) {
     this.each(function() {
-        var obj = jQuery(this)
+        var obj = jQuery(this);
         if (obj.attr('href')) {
             obj.click(function() { return obj.adjax(); });
             }
-        else if (obj.attr('action')) {
-            var form_processor = form_processor_factory(obj)
-            obj.ajaxForm({success:form_processor, dataType:'json'});
-            }
+        else if (obj.attr('tagName') == 'FORM') {
+            /* submits an ajax form and prevent reloading POST submit */
+            function submit_form() {
+                obj.ajaxSubmit({success: form_processor_factory(obj), dataType:'json'}); 
+                return False; }
+            // Bind the ajax submit to the submit signal, so that it can be called from the form.
+            obj.submit(submit_form)
         });
     }
 
