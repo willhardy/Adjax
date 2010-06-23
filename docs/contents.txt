@@ -1,0 +1,18 @@
+.. _contents:
+
+====================================
+Roll Your Own documentation contents
+====================================
+
+.. toctree::
+   :maxdepth: 2
+   
+   introduction/index
+   topics/index
+   reference/index
+
+Indices, glossary and tables
+============================
+
+* :ref:`genindex`
+* :ref:`modindex`

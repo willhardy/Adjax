@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
     (r'^demo/', include('basic.urls')),
+    (r'^tutorial/', include('tutorial.urls')),
 )
 
 from django.conf import settings

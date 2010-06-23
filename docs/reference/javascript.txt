@@ -1,0 +1,5 @@
+.. _reference-javascript:
+
+========================
+The Adjax Javascript API
+========================

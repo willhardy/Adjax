@@ -15,6 +15,7 @@ urlpatterns = patterns('basic.views',
     url(r'^template_include/tag/$', 'template_include_tag',  name="template_include_tag"),
     url(r'^template_include/update/$', 'template_include_update',  name="template_include_update"),
     url(r'^do_everything/$', 'do_everything',  name="do_everything"),
+    url(r'^alternative_response/$', 'alternative_response',  name="alternative_response"),
     url(r'^do_nothing/$', 'do_nothing',  name="do_nothing"),
     url(r'^$', 'demo',  name="demo"),
 )

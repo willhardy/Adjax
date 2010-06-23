@@ -34,13 +34,18 @@ form_processor_factory = function(form_obj) {
         var html = '<ul class="errorlist">';
         for (msg in errors[error]) { html += '<li>'+errors[error][msg]+'</li>'; }
         html += '</ul>';
+
         /* Attach the messages somewhere and add classes */
         if (error == '__all__') {
             form_obj.prepend(html); }
         else {
-            var obj = form_obj.find('#form-error-'+error, '#'+error);
-            obj.addClass('error');
-            obj.after(html); }
+            form_obj.find('#form-error-'+error).each(function() {
+                jQuery(this).addClass('error');
+                jQuery(this).after(html); });
+            form_obj.find('#'+error).each(function() {
+                jQuery(this).addClass('error');
+                jQuery(this).after(html); });
+            }
         }
     }
   }
@@ -120,10 +125,10 @@ jQuery.fn.adjaxify = function(data) {
             /* submits an ajax form and prevent reloading POST submit */
             function submit_form() {
                 obj.ajaxSubmit({success: form_processor_factory(obj), dataType:'json'}); 
-                return False; }
+                return false; }
             // Bind the ajax submit to the submit signal, so that it can be called from the form.
             obj.submit(submit_form)
-        });
+        }});
     }
 
 

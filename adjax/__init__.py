@@ -66,3 +66,8 @@ def extra(request, key, value):
 def render_to_response(request, template_name, context=None, prefix=None):
     """ Update any included templates. """
     get_store(request).render_to_response(template_name, context, prefix)
+
+
+def response(request, include_messages=False):
+    """ Provide an appropriate HTTP response. """
+    return get_store(request).response(request, include_messages=include_messages)

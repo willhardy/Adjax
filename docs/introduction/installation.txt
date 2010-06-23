@@ -1,0 +1,35 @@
+.. _introduction-install:
+
+Quick install guide
+===================
+
+The easiest way to install Adjax is to use use ``pip``, if you have it:
+
+    pip install adjax
+
+If you don't, and you prefer the old school ``easy_install``, then the following command is for you:
+
+    easy_install adjax
+
+Not So Quick install
+--------------------
+
+If you don't have ``easy_install`` or ``pip`` installed, you will need to do things manually. 
+Firstly, install Django by following the installation instructions at http://docs.djangoproject.com/en/dev/intro/install/.  
+
+Next download the Adjax release from http://code.google.com/p/django-adjax/. To unpack and install it, run the following from your shell::
+
+    tar xvzf adjax-1.1.tar.gz
+    cd adjax-1.1.0/
+    python setup.py install
+
+That's it, you've installed everything you need to install. You can now try the :ref:`tutorial <introduction-tutorial>`.
+
+
+Development version
+-------------------
+
+For those you like to help out, you can check out the development version here::
+
+    svn checkout http://django-adjax.googlecode.com/svn/trunk/ adjax-trunk
+

@@ -1,0 +1,5 @@
+.. _reference-views:
+
+===================
+Adjax in your views
+===================

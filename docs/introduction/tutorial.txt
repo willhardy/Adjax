@@ -1,0 +1,83 @@
+.. _introduction-tutorial:
+
+========================
+Adjax Framework Tutorial
+========================
+
+This tutorial will help you add some basic Ajax functionality to your site, introducing you to the Adjax framework. It assumes you have already :ref:`installed the Adjax framework <introduction-install>`. The tutorial also assumes you know Django well enough to create your own app using views, url config and templates.
+
+Writing an Ajax view
+--------------------
+
+An ajax view is just like any other view in Django, a simple function that takes a request and returns a response. Instead of rendering a template and returning an HttpRequest() object directly (or through ``render_to_response``), you register data and request for javascript changes and let the Adjax framework prepare a suitable JSON response for you.
+
+Create the following view in your app:
+
+    import adjax
+
+    def hello_world(request):
+        adjax.replace(request, 'h1', 'Hello world')
+        return adjax.response(request)
+
+To make this do what we want it to do, we need to do two things. Firstly, plug the Django view into your site as you normally would (install the app, add an entry to your url configuration). Secondly, we need to add the appropriate Javascript to call the view and process the response. You will need to prepare another view, which will prepare the HTML required to run our Ajax query. For the purposes of this tutorial, here is a simple view that will do that:
+
+    from django.shortcuts import render_to_response
+    from django.template.context import RequestContext
+
+    def index(request):
+        return render_to_response('index.html', context_instance=RequestContext(request))
+
+And a simple ``urls.py`` which will connect our two views:
+
+    from django.conf.urls.defaults import *
+
+    urlpatterns = patterns('myapp.views',
+        url(r'^$', 'index', name="index"),
+        url(r'^hello_world/$', 'hello_world', name="hello_world"),
+    )
+
+To add the appropriate Javascript, we need to edit the ``index.html`` template, adding the following HTML:
+
+    <html>
+    <body>
+        <h1>Replace Me Please</h1>
+        <a href="{% url hello_world %}">Update</a>
+
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.adjax.js"></script>
+        <script>
+            $('a').adjaxify();
+        </script>
+    </body>
+    </html>
+         
+This template contains four important elements:
+- our h1 tag, which will be replaced
+- a link to start the Ajax query when the user feels like it
+- javascript library imports: one for JQuery, one for Adjax
+- hand written javascript to turn our link into an Ajax requesting link (``adjaxify``)
+
+Fire up the django development server and point your browser at ``http://localhost:8000/``.
+You will be shown a very simple page with our old heading and a link. If you click the link the text will be replaced, without refreshing the entire page. 
+
+
+Users without Javascript
+------------------------
+If you can, turn off Javascript and reload the page. If your server is in ``DEBUG`` mode, clicking on the link will provide information on the Ajax response, as well as the url where non-javascript users will be redirected to. If a user does not have javascript enabled, the Ajax view will still be called (performing any relevant actions) and the user will be redirected to where they came from. The page refresh is slower than a partial, Ajax-based refresh, but it should show the equivalent information. This is known as graceful degredation and is 'built-in' to Adjax.
+
+
+What else is possible?
+----------------------
+
+This is just a simple demonstration of how everything fits together. The Adjax framework has a number of other features, which you can read about in the :ref:`Adjax view functions reference <reference-views>`, the :ref:`Adjax template tag reference <reference-templates>` and the :ref:`Adjax javascript reference <reference-javascript>`. Here you will read how Adjax implements useful functionality, such as:
+
+- replacing HTML elements (what we just did)
+- hiding HTML elements
+- displaying messages to the user
+- updating displayed information from a Django model instance
+- submitting and validating forms
+- redirecting the browser
+- providing custom information in the JSON response
+- including django templates
+- customising the javascript implementation (eg the way messages are shown or hidden).
+

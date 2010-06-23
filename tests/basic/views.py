@@ -16,7 +16,6 @@ def hide(request):
     """ Hide an HTML element """
     adjax.hide(request, '#xyz')
 
-@adjax.adjax_response
 def messages(request):
     """ Display some messages """
     adjax.success(request, "This is your first success")
@@ -24,6 +23,7 @@ def messages(request):
     adjax.warning(request, "This is your first warning")
     adjax.error(request, "This is your first error")
     adjax.debug(request, "This is your first debug")
+    return adjax.response(request, include_messages=True)
    
 @adjax.adjax_response
 def update(request):
@@ -100,6 +100,26 @@ def do_everything(request):
     adjax.render_to_response(request, 'basic/_included.html', {'abc': 'xyz123'})
     adjax.render_to_response(request, 'basic/_included.html', {'abc': 'mno456'}, prefix="tree")
     return {'one': 123}
+
+def alternative_response(request):
+    """ Putting everything together. """
+    adjax.replace(request, '#abc', 'Hello world')
+    adjax.hide(request, '#xyz')
+    adjax.success(request, "This is your first success")
+    adjax.info(request, "This is your first info")
+    adjax.warning(request, "This is your first warning")
+    adjax.error(request, "This is your first error")
+    adjax.debug(request, "This is your first debug")
+    my_obj = MyModel(name="Abc", color="blue", price=123)
+    adjax.update(request, my_obj, ('name', 'color'))
+    my_form = MyForm({'name': "ABC", 'price': 123}, prefix="withprefix")
+    adjax.form(request, my_form)
+    adjax.redirect(request, 'do_nothing')
+    adjax.extra(request, 'two', 234)
+    adjax.render_to_response(request, 'basic/_included.html', {'abc': 'xyz123'})
+    adjax.render_to_response(request, 'basic/_included.html', {'abc': 'mno456'}, prefix="tree")
+    adjax.extra(request, 'one', 123)
+    return adjax.response(request, include_messages=True)
 
 def do_nothing(request):
     """ A view that can't go wrong! 

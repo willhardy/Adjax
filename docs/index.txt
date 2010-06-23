@@ -1,0 +1,37 @@
+.. Adjax documentation master file, 
+   created by sphinx-quickstart on Sat May 15 11:27:50 2010.
+   This documentation is modelled on the Django documentation, partly for 
+   familiarity, partly because it's very well written.
+
+===================
+Adjax Documentation
+===================
+
+
+First steps
+===========
+
+- :ref:`Overview <introduction-overview>`
+- :ref:`Installation <introduction-install>`
+- :ref:`Tutorial <introduction-tutorial>`
+
+Reference
+=========
+
+- :ref:`Adjax view functions <reference-views>`
+- :ref:`Adjax template tags <reference-templates>`
+- :ref:`Adjax javascript API <reference-javascript>`
+
+More information
+================
+
+- :ref:`Best practice <topics-best-practices>`
+
+Indices and tables
+==================
+
+- :ref:`contents`
+- :ref:`genindex`
+- :ref:`modindex`
+- :ref:`search`
+

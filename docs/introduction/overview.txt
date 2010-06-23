@@ -1,0 +1,22 @@
+.. _introduction-overview:
+
+================
+Welcome to Adjax
+================
+
+Adjax is a Django based framework, which facilitates and organises Ajax-based websites. The aim is to keep code a clear interface for Ajax functionatliy, keeping your code clean and easy to follow.
+
+Design
+------
+
+There are three components to Adjax:
+- Functions for preparing an Ajax response
+- Template tags for preparing Ajax-optimised HTML
+- A Javascript library for handling responses from our system
+
+All three components are optional, the Javascript library is currently available for jQuery, but you are free to provide your own alternative. See the details in the :ref:`Developer's Guide <reference-developers>`
+
+What's next?
+------------
+
+You might like to read the :ref:`Quick install guide <introduction-install>` or start reading through the :ref:`tutorial <introduction-tutorial>`.

@@ -166,3 +166,50 @@ class BasicTests(TestCase):
         key = ".%s" % get_template_include_key('basic/_included.html', prefix="tree")
         assert key in data['replace'], repr(data['replace'])
         assert 'mno456' in data['replace'][key]
+
+    def test_alternative_response(self):
+        """ A quick check on the ability to use all functionality at once. """
+        data = self.get_view('alternative_response')
+        assert 'replace' in data, repr(data)
+        assert 'hide' in data, repr(data)
+        assert 'messages' in data, repr(data)
+        assert 'update' in data, repr(data)
+        assert 'forms' in data, repr(data)
+        assert 'redirect' in data, repr(data)
+        assert 'extra' in data, repr(data)
+
+        # replace
+        self.assert_value_in(data, 'Hello world', 'replace', '#abc')
+        # hide
+        self.assert_value_in(data, '#xyz', 'hide', 0)
+        # messages
+        for message in data['messages']:
+            assert message['content'].startswith(u"This is your first "), message
+            assert message['content'].endswith(message['tags']), message
+        # update
+        model = MyModel(name="Abc", color="blue")
+        name_key = get_key(model, 'name')
+        color_key = get_key(model, 'color')
+        price_key = get_key(model, 'price')
+        update_dict = data['update']
+        assert price_key not in update_dict
+        try:
+            self.assertEqual(update_dict[name_key], "Abc")
+            self.assertEqual(update_dict[color_key], "blue")
+        except KeyError:
+            self.fail(repr(update_dict))
+        # forms
+        assert 'id_withprefix-color' in data['forms'], repr(data)
+        self.assertEqual(data['forms']['id_withprefix-color'][0], u"This field is required.")
+        # redirect
+        self.assertEqual(data['redirect'], reverse('do_nothing'))
+        # extra
+        self.assertEqual(data['extra']['one'], 123)
+        self.assertEqual(data['extra']['two'], 234)
+        # template include
+        key = ".%s" % get_template_include_key('basic/_included.html')
+        assert key in data['replace'], repr(data['replace'])
+        assert 'xyz123' in data['replace'][key]
+        key = ".%s" % get_template_include_key('basic/_included.html', prefix="tree")
+        assert key in data['replace'], repr(data['replace'])
+        assert 'mno456' in data['replace'][key]

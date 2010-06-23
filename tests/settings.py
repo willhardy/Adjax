@@ -92,4 +92,5 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'adjax',
     'basic',
+    'tutorial',
 )

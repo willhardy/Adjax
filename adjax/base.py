@@ -5,6 +5,12 @@ from django.contrib import messages
 from django.core import urlresolvers
 from django.template.context import RequestContext
 from django.template.loader import render_to_string
+from pprint import pformat
+from django.http import HttpResponse
+from django.conf import settings
+from django.template.context import RequestContext
+from django.shortcuts import render_to_response as django_render_to_response
+DEFAULT_REDIRECT = getattr(settings, 'ADJAX_DEFAULT_REDIRECT', None)
 
 
 def get_store(request):
@@ -98,17 +104,48 @@ class AdjaxStore(object):
         dom_element = ".%s" % get_template_include_key(template_name, prefix)
         self.replace(dom_element, rendered_content)
 
-    @property
-    def json_response(self):
+    def json_response(self, include_messages=False):
         """ Return a json response with our ajax data """
-        elements = (
+        return JsonResponse(self._get_response_dict(include_messages))
+
+    def _get_response_dict(self, include_messages=False):
+        elements = [
             ('extra', self.extra_data),
-            ('messages', self.messages_data),
             ('forms', self.form_data),
             ('replace', self.replace_data),
             ('hide', self.hide_data),
             ('update', self.update_data),
             ('redirect', self.redirect_data),
-            )
-        return JsonResponse(dict((a,b) for a,b in elements if b))
+            ]
+        if include_messages:
+            elements.append(('messages', self.messages_data),)
+        return dict((a,b) for a,b in elements if b)
 
+    def pretty_json_response(self, include_messages=False):
+        """ Returns a pretty string for displaying the json response
+            to a developer. 
+        """
+        return pformat(self._get_response_dict(include_messages))
+
+
+    def response(self, request, include_messages=False):
+        """ Renders the response using JSON, if appropriate.
+        """
+        if request.is_ajax():
+            return self.json_response(include_messages)
+    
+        else:
+            # Try and redirect somewhere useful
+            redirect_to = None
+            if 'HTTP_REFERER' in request.META:
+                redirect_to = request.META['HTTP_REFERER']
+            elif DEFAULT_REDIRECT:
+                redirect_to = DEFAULT_REDIRECT
+            if settings.DEBUG:
+                debug_template = 'adjax/debug.html'
+                context = RequestContext(request, 
+                            {'store': self, 'redirect_to': redirect_to})
+                return django_render_to_response(debug_template, context_instance=context)
+            if redirect_to:
+                return redirect(redirect_to)
+            return HttpResponse()
