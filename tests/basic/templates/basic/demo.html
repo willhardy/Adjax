@@ -33,6 +33,10 @@
   <p id="xyz">Goodbye world</p>
   <a class="update" href="{% url hide %}">Hide!</a></li>
 
+  <li><h3>Custom JS callback</h3>
+  <p>My name is {% adjax my_obj.name %}.</p>
+  <a id="update-custom" href="{% url update %}">Replace!</a></li>
+
   <li><h3>Browser redirects</h3>
   <p>Move on?</p>
   <a class="update" href="{% url redirect %}">Redirect!</a></li>
@@ -43,5 +47,6 @@
   <script type="text/javascript">
     $('form').adjaxify();
     $('.update').adjaxify();
+    $('#update-custom').adjaxify(function() {alert("My custom Javascript");});
   </script>
 {% endblock %}

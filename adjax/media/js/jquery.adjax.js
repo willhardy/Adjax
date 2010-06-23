@@ -104,7 +104,7 @@ jQuery.fn.adjax = function(data) {
             jQuery.adjax(url, data);
             return false;
         } else if (jQuery(this).attr('action')) {
-            var form_processor = form_processor_factory(obj)
+            var form_processor = form_processor_factory(obj);
             jQuery(this).ajaxSubmit({success:form_processor, dataType:'json'});
             return false;
         }
@@ -115,19 +115,27 @@ jQuery.fn.adjax = function(data) {
     }
 
 /* Automatically take a clickable object, doing an ajax call on click. */
-jQuery.fn.adjaxify = function(data) {
+jQuery.fn.adjaxify = function(callback) {
     this.each(function() {
         var obj = jQuery(this);
         if (obj.attr('href')) {
-            obj.click(function() { return obj.adjax(); });
+            if (callback) { obj.click(function() { var val = obj.adjax(); callback(); return val; }); }
+            else { obj.click(function() { return obj.adjax(); });}
             }
         else if (obj.attr('tagName') == 'FORM') {
             /* submits an ajax form and prevent reloading POST submit */
-            function submit_form() {
-                obj.ajaxSubmit({success: form_processor_factory(obj), dataType:'json'}); 
-                return false; }
+            if (callback) {
+                submit_form = function() {
+                    obj.ajaxSubmit({success: form_processor_factory(obj), dataType:'json'}); 
+                    callback(); 
+                    return false; }
+            } else {
+                submit_form = function() {
+                    obj.ajaxSubmit({success: form_processor_factory(obj), dataType:'json'}); 
+                    return false; }
+            }
             // Bind the ajax submit to the submit signal, so that it can be called from the form.
-            obj.submit(submit_form)
+            obj.submit(submit_form);
         }});
     }
 

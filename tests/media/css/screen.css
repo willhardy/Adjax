@@ -77,7 +77,8 @@ h2 {
     #demo-features li h3 {
         margin-bottom: 10px; 
         }
-    #demo-features li a.update {
+    #demo-features li a.update, 
+    #demo-features li a#update-custom {
         display: block;
         padding: 4px;
         background: #032;
@@ -92,7 +93,8 @@ h2 {
         margin-top: 10px;
         margin-left: -2px;
         }
-    #demo-features li a.update:hover {
+    #demo-features li a.update:hover,
+    #demo-features li a#update-custom:hover {
         background: #032;
         }
     #demo-features form label { display: block; width: 150px; }
