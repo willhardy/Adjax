@@ -18,7 +18,7 @@ jQuery.adjax_callbacks = {
    TODO: Allow this to be overridden.
    TODO: How are multiple forms handled?
 */
-form_processor_factory = function(form_obj) {
+form_processor_factory = function(form_obj, callback) {
   if (!form_obj) { form_obj = jQuery; }
 
   return function(json) {
@@ -48,6 +48,9 @@ form_processor_factory = function(form_obj) {
             }
         }
     }
+    if (callback) {
+        callback(json);
+        }
   }
 
 
@@ -86,9 +89,10 @@ process_json_response = function(json) {
             }
         }
     }
+
 /* Call a url that is served by an adjax decorated view */
-jQuery.adjax = function(url, data) {
-    jQuery.getJSON(url, data, process_json_response);
+jQuery.adjax = function(url, data, callback) {
+    jQuery.getJSON(url, data, function(json) { process_json_response(json); if (callback) { callback(json); }});
     /* Return false to prevent any links from being followed */
     return false;
     }
@@ -97,14 +101,14 @@ jQuery.adjax = function(url, data) {
  * attribute, or post to the form's target.
  * USAGE:   $('#vote').adjax()
  */
-jQuery.fn.adjax = function(data) {
+jQuery.fn.adjax = function(data, callback) {
     this.each(function() {
         if (jQuery(this).attr('href')) {
             var url = jQuery(this).attr('href').split("?")[0];
-            jQuery.adjax(url, data);
+            jQuery.adjax(url, data, callback);
             return false;
         } else if (jQuery(this).attr('action')) {
-            var form_processor = form_processor_factory(obj);
+            var form_processor = form_processor_factory(obj, callback);
             jQuery(this).ajaxSubmit({success:form_processor, dataType:'json'});
             return false;
         }
@@ -119,21 +123,13 @@ jQuery.fn.adjaxify = function(callback) {
     this.each(function() {
         var obj = jQuery(this);
         if (obj.attr('href')) {
-            if (callback) { obj.click(function() { var val = obj.adjax(); callback(); return val; }); }
-            else { obj.click(function() { return obj.adjax(); });}
+            obj.click(function() { return obj.adjax(null,callback); }); 
             }
         else if (obj.attr('tagName') == 'FORM') {
             /* submits an ajax form and prevent reloading POST submit */
-            if (callback) {
-                submit_form = function() {
-                    obj.ajaxSubmit({success: form_processor_factory(obj), dataType:'json'}); 
-                    callback(); 
-                    return false; }
-            } else {
-                submit_form = function() {
-                    obj.ajaxSubmit({success: form_processor_factory(obj), dataType:'json'}); 
-                    return false; }
-            }
+            submit_form = function() {
+                obj.ajaxSubmit({success: form_processor_factory(obj, callback), dataType:'json'}); 
+                return false; }
             // Bind the ajax submit to the submit signal, so that it can be called from the form.
             obj.submit(submit_form);
         }});

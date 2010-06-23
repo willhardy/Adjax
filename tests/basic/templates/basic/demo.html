@@ -47,6 +47,6 @@
   <script type="text/javascript">
     $('form').adjaxify();
     $('.update').adjaxify();
-    $('#update-custom').adjaxify(function() {alert("My custom Javascript");});
+    $('#update-custom').adjaxify(function(data) {alert("My custom Javascript: "+data.update['data-basic-MyModel-None-name']);});
   </script>
 {% endblock %}
