@@ -7,6 +7,7 @@ project_dir = lambda p: os.path.join(PROJECT_DIR, p)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+ADJAX_DEBUG = DEBUG
 
 ADMINS = (
     ('Will Hardy', 'adjax@hardysoftware.com.au'),

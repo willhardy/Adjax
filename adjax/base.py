@@ -9,9 +9,11 @@ from pprint import pformat
 from django.http import HttpResponse
 from django.conf import settings
 from django.template.context import RequestContext
+from django.shortcuts import redirect
 from django.shortcuts import render_to_response as django_render_to_response
-DEFAULT_REDIRECT = getattr(settings, 'ADJAX_DEFAULT_REDIRECT', None)
 
+DEFAULT_REDIRECT = getattr(settings, 'ADJAX_DEFAULT_REDIRECT', None)
+ADJAX_DEBUG = getattr(settings, 'ADJAX_DEBUG', None)
 
 def get_store(request):
     """ Gets a relevant store object from the given request. """
@@ -141,7 +143,7 @@ class AdjaxStore(object):
                 redirect_to = request.META['HTTP_REFERER']
             elif DEFAULT_REDIRECT:
                 redirect_to = DEFAULT_REDIRECT
-            if settings.DEBUG:
+            if ADJAX_DEBUG:
                 debug_template = 'adjax/debug.html'
                 context = RequestContext(request, 
                             {'store': self, 'redirect_to': redirect_to})
