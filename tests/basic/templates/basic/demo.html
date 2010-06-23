@@ -16,7 +16,7 @@
   <a class="update" href="{% url update %}">Update!</a></li>
 
   <li><h3>Form submission and validation</h3>
-  <form action="{% url forms %}" method="post">{{ form.as_p }}
+  <form id="form" action="{% url forms %}" method="post">{{ form.as_p }}
   <p>{% csrf_token %}<input type="submit" /></p></form></li>
 
   <li><h3>Replace HTML content</h3>
@@ -37,6 +37,10 @@
   <p>My name is {% adjax my_obj.name %}.</p>
   <a id="update-custom" href="{% url update %}">Replace!</a></li>
 
+  <form id="custom-form" action="{% url forms %}" method="post">{{ form.as_p }}
+  <p>{% csrf_token %}<input type="submit" /></p></form></li>
+
+
   <li><h3>Browser redirects</h3>
   <p>Move on?</p>
   <a class="update" href="{% url redirect %}">Redirect!</a></li>
@@ -45,8 +49,9 @@
 
 {% block javascript %}
   <script type="text/javascript">
-    $('form').adjaxify();
+    $('#form').adjaxify();
     $('.update').adjaxify();
     $('#update-custom').adjaxify(function(data) {alert("My custom Javascript: "+data.update['data-basic-MyModel-None-name']);});
+    $('#custom-form').adjaxify(function(data) { if (!data.forms) {alert("Success!");} });
   </script>
 {% endblock %}

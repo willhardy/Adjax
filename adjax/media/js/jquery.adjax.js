@@ -47,10 +47,10 @@ form_processor_factory = function(form_obj, callback) {
                 jQuery(this).after(html); });
             }
         }
-    }
     if (callback) {
         callback(json);
         }
+    }
   }
 
 
