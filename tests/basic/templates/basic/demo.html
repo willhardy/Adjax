@@ -35,8 +35,7 @@
 
   <li><h3>Custom JS callback</h3>
   <p>My name is {% adjax my_obj.name %}.</p>
-  <a id="update-custom" href="{% url update %}">Replace!</a></li>
-
+  <a id="update-custom" href="{% url update %}">Replace!</a>
   <form id="custom-form" action="{% url forms %}" method="post">{{ form.as_p }}
   <p>{% csrf_token %}<input type="submit" /></p></form></li>
 
