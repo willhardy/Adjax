@@ -1,8 +1,8 @@
 .. _contents:
 
-====================================
-Roll Your Own documentation contents
-====================================
+============================
+Adjax documentation contents
+============================
 
 .. toctree::
    :maxdepth: 2
