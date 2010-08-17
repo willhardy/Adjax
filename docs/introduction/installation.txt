@@ -31,5 +31,5 @@ Development version
 
 For those you like to help out, you can check out the development version here::
 
-    svn checkout http://django-adjax.googlecode.com/svn/trunk/ adjax-trunk
+    git clone git@github.com:willhardy/Adjax.git
 
