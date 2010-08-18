@@ -3,3 +3,186 @@
 ===================
 Adjax in your views
 ===================
+
+
+Introduction
+------------
+The Adjax framework handles the communication between your view and the browser. 
+To implement Ajax features manually, you would need to collect relevant information for the browser, pass it in a JSON response and deal with the data using javascript. 
+Since a number of tasks are very common, the Adjax framework provides a standard packaging with a convenient API. 
+Now, your views don't have to deal with the details of packaging a JSON response.
+
+The following common tasks are handled by the API:
+
+- User messages
+- Browser redirection (javascript based)
+- Form validation
+- Data update (data from a django model)
+- Hiding/replacing HTML elements
+- Re-Rendering of sections of a page (template inclusion)
+
+User messages
+-------------
+Adjax makes use of Django's message framework, to avoid reinventing the wheel and to allow you to reuse any code on your site that makes use of Django's messages.
+You can either add the messages using Django's API or using Adjax, both approaches have the same effect:
+
+If you want the messages to be pushed to the browser on the Ajax response, you need to explicity say so by passing the ``include_messages`` to the response. 
+Otherwise, the messages will be held until next time (perhaps in a normal django-message-using view).
+
+http://docs.djangoproject.com/en/dev/ref/contrib/messages/
+
+.. function :: adjax.debug(request, message)
+.. function :: adjax.info(request, message)
+.. function :: adjax.success(request, message)
+.. function :: adjax.warning(request, message)
+.. function :: adjax.error(request, message)
+
+These functions are simply convenient shortcuts to the relevant function in ``django.contrib.messages``.
+The following view pushes five messages of various levels to the browser.
+
+.. code-block:: python
+
+    import adjax
+
+    def my_view(request):
+        adjax.debug(request, '%s SQL statements were executed.' % count)
+        adjax.info(request, 'Three credits remain in your account.')
+        adjax.success(request, 'Profile details updated.')
+        adjax.warning(request, 'Your account expires in three days.')
+        adjax.error(request, 'Document deleted.')
+        
+        return adjax.response(request, include_messages=True)
+
+You can also use Django's message API, especially if you want to access some more sophisticated features of the message framework.
+
+.. code-block:: python
+
+    import adjax
+    from django.contrib import messages
+    SERIOUSLY_CRAZY_ERROR = 99
+
+    def my_view(request):
+        messages.info(request, 'The messages framework can be used directly too.')
+        messages.add_message(request, SERIOUSLY_CRAZY_ERROR, 'Explosion imminent.')
+        
+        return adjax.response(request, include_messages=True)
+
+
+Browser redirection
+-------------------
+
+Often, an Ajax request may trigger the need for a redirect.
+The Adjax framework allows the developer to trigger a browser-based redirect from the view.
+
+.. function :: adjax.redirect(request, to, *args, **kwargs)
+
+    Ask the browser to redirect to the given URL. The given target can be a relative or absolute path, a Django model (with ``get_absolute_url``), or a named URL name. In the last case, the arguments and keyword arguments are used to resolve the URL. This operates exactly in the same way that ``django.core.urlresolvers.redirect()`` does.
+
+
+.. code-block:: python
+
+    import adjax
+
+    def my_view(request):
+        if 1+1 == 2:
+            return adjax.redirect(request, 'my_success_url')
+
+        adjax.error(request, 'Fundamental collapse of mathematical theory.')
+        
+        return adjax.response(request, include_messages=True)
+
+
+The view need not end on the redirect. 
+In the following example, the view continues after the redirect command and messages are shown after the redirect (if the target view chooses to show them).
+
+.. code-block:: python
+
+    import adjax
+
+    def my_view(request):
+        if 1+1 == 2:
+            adjax.redirect(request, 'my_success_url')
+            adjax.success(request, 'Congratulations!')
+        
+        return adjax.response(request)
+
+
+Form validation
+---------------
+
+Form validation can be performed on an Ajax request.
+
+.. function :: adjax.form(request, form)
+
+    Validates the given form and provids error messages to browser.
+
+.. code-block:: python
+
+    import adjax
+
+    def my_view(request):
+        form = MyForm(request.POST)
+
+        adjax.form(request, form)
+        return adjax.response(request)
+
+
+Data update
+-----------
+
+Often an Ajax request will alter attribute values on a Django model. Adjax provides a way to update all the existing values on the page.
+
+.. function :: adjax.update(request, model_instance, attributes)
+
+    Updates previous uses of data from the given model_instance. The attributes argument is a list of attributes that are updated. These must be explicitly provided, so that only the necessary data is sent (in plaintext) to the browser.
+
+.. code-block:: python
+
+    import adjax
+
+    def my_view(request):
+        my_obj = MyModel.objects.get(pk=1)
+
+        adjax.update(request, my_obj, ('name', 'color'))
+        return adjax.response(request)
+
+
+Hiding/replacing HTML elements
+------------------------------
+
+.. function :: adjax.hide(request, element_name)
+
+    Ask the browser to hide the named element. 
+
+.. function :: adjax.replace(request, element_name, value)
+
+    Ask the browser to replace the named element with the given value.
+
+.. code-block:: python
+
+    import adjax
+
+    def my_view(request):
+        my_obj = MyModel.objects.get(pk=1)
+
+        adjax.hide(request, 'sidebar')
+        adjax.replace(request, 'title', 'Hello World')
+        return adjax.response(request)
+
+
+Re-Rendering of sections of a page
+----------------------------------
+
+.. function :: adjax.render(request, template_name, context=None, context_instance=None)
+
+    Re-render all instances of the included template, using the given context.
+
+.. code-block:: python
+
+    import adjax
+
+    def my_view(request):
+        my_obj = MyModel.objects.get(pk=1)
+
+        adjax.render(request, 'my_app/template.html', {'title': 'Hello World'})
+        return adjax.response(request)
