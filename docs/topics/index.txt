@@ -1,7 +1,7 @@
 .. _topics-index:
 
-Best Practices Guides
-=====================
+Topical guides
+==============
 
 .. toctree::
    :maxdepth: 1

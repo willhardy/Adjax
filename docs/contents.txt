@@ -8,8 +8,8 @@ Adjax documentation contents
    :maxdepth: 2
    
    introduction/index
-   topics/index
    reference/index
+   topics/index
 
 Indices, glossary and tables
 ============================
