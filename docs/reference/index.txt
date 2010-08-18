@@ -7,6 +7,6 @@ API Reference
    :maxdepth: 1
 
    views
-   templtaes
+   templates
    javascript
     

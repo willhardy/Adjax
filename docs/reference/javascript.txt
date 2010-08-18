@@ -3,3 +3,61 @@
 ========================
 The Adjax Javascript API
 ========================
+
+In order to use Adjax, you will need to load javascript that will initiate the Ajax request and process the response.
+In general, this is as simple as linking to the Adjax library, and enabling it for a given link or form.
+
+Javascript libraries
+--------------------
+
+The Adjax library can be found at ``media/js/jquery.adjax.js`` in the ``adjax`` module. 
+A compatible version of the required jquery library is also available.
+
+To include them, simply copy the files into your ``MEDIA_ROOT`` (or use a symbolic link) add add the appropriate html. For example:
+
+.. code-block:: html
+
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.min.js"></script> 
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.adjax.js"></script> 
+
+
+Basic Use
+---------
+
+To enable a link or form, simply call the ``.adjaxify()`` method on the relevant element. For example:
+
+.. code-block:: html
+
+    <a id="my-link" href="{% url my_ajax_view %}">Do some Ajaxing</a>
+
+    <script type="text/javascript"> 
+        $('#my-link').adjaxify();
+    </script> 
+
+
+Advanced customisation
+----------------------
+
+The ``.adjaxify()`` method can also take a single argument, being a callback function, which is called after the Ajax request is complete and the data has been processed. A single argument is passed to the callback, containing the json data returned by the view.
+
+.. code-block:: html
+
+    <script type="text/javascript"> 
+        $('#my-link').adjaxify(function(data) { if (!data.forms) {alert("Success!");} });
+    </script> 
+
+
+The way messages are displayed can also be customised. This is done by defining your own callbacks in ``jQuery.adjax_callbacks``. 
+
+For example, the following overrides the default implementation of the ``show_message`` function, with a customised version that slides down with custom HTML, and slides up a few seconds later if it is not an error message:
+
+.. code-block:: javascript
+
+    $.adjax_callbacks.show_message = function(message) {
+        msg_content = jQuery('<div class="bar1"><p>'+message.content+'</p><a href="#" class="close">Close</a></div>');
+        msg_content.hide();
+        jQuery('#messages').prepend(msg_content);
+        msg_content.slideDown('slow');
+        if (message.level < 40) { msg_content.wait(2000).slideUp('slow') }
+        $('.bar1 .close').click(function() {$(this).closest('.bar1').remove();});
+    }

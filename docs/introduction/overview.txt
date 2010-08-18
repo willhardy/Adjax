@@ -10,6 +10,7 @@ Design
 ------
 
 There are three components to Adjax:
+
 - Functions for preparing an Ajax response
 - Template tags for preparing Ajax-optimised HTML
 - A Javascript library for handling responses from our system

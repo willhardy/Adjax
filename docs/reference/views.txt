@@ -87,7 +87,7 @@ The Adjax framework allows the developer to trigger a browser-based redirect fro
         if 1+1 == 2:
             return adjax.redirect(request, 'my_success_url')
 
-        adjax.error(request, 'Fundamental collapse of mathematical theory.')
+        adjax.info(request, "Let's stay here for a while.")
         
         return adjax.response(request, include_messages=True)
 

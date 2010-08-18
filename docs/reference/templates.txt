@@ -3,3 +3,71 @@
 =======================
 Adjax in your templates
 =======================
+
+For some of the more useful features in the Adjax framework, such as data value updates and section reloading (template inclusion),
+you'll need to make use of some template tags.
+
+Data value updates
+------------------
+
+Data elements can be marked for updating the ``{% adjax %}`` tag. Simply use the tag on a django object as you would when presenting the data using a ``{{ myobj }}`` variable tag. Filters are not yet supported.
+
+.. code-block:: html
+
+    {% load ajax %}
+
+    <p>My name is {% adjax my_obj.name %}.</p>
+
+The resulting HTML looks something like this:
+
+.. code-block:: html
+
+    <p>My name is <span class="data-basic-MyModel-23-name">Tree</span>.</p>
+
+Please do not rely on the generated class name being the way it is. 
+Aside from being unimportant (you wont need to use it directly), 
+future Adjax versions may use an entirely different format (for example, using a hash). 
+Also note that currently, details about your model instance (including the primary key) appear in the HTML output.
+
+Section Reloading (template inclusion)
+--------------------------------------
+
+You can include a template which you intend to reload using Adjax by using the ``{% adjax_include %}`` template tag.
+The tag simply takes an argument being the name of the relevant template.
+
+.. code-block:: html
+
+    {% load ajax %}
+
+    {% adjax_include "myapp/template.html" %}
+
+The following HTML is then generated:
+
+.. code-block:: html
+
+    <div class="tpl-b4hf2396929rw5tjfaqni5077m41d2b"> 
+      Here is the content of the included template.
+    </div> 
+
+There are also two optional arguments to the ``{% adjax_include %}`` tag. 
+The first is ``prefix``, for adding a prefix to the class name (eg ``tpl-left-abc123xyz``).
+This is useful where the same template is included twice or more on a given page, and you don't want to update all of them together. 
+
+The second optional argument allows you to customise the wrapper HTML element. 
+By default it is a ``<div>`` element.
+
+Here are the two optional arguments in action:
+
+.. code-block:: html
+
+    {% load ajax %}
+
+    {% adjax_include "myapp/template.html" prefix="left" wrapper="span" %}
+
+The following HTML is then generated:
+
+.. code-block:: html
+
+    <span class="tpl-left-b4hf2396929rw5tjfaqni5077m41d2b"> 
+      Here is the content of the included template.
+    </span> 
