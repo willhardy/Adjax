@@ -9,7 +9,7 @@ from pprint import pformat
 from django.http import HttpResponse
 from django.conf import settings
 from django.template.context import RequestContext
-from django.shortcuts import redirect
+from django.shortcuts import redirect as django_redirect
 from django.shortcuts import render_to_response as django_render_to_response
 
 DEFAULT_REDIRECT = getattr(settings, 'ADJAX_DEFAULT_REDIRECT', None)
@@ -74,23 +74,25 @@ class AdjaxStore(object):
 
     def redirect(self, to, *args, **kwargs):
         """ Redirect the browser dynamically to another page. """
+        # If a django object is passed in, use the 
         if hasattr(to, 'get_absolute_url'):
             self.redirect_data = to.get_absolute_url()
-            return
+            return self.response()
         try:
             self.redirect_data = urlresolvers.reverse(to, args=args, kwargs=kwargs)
-            return
         except urlresolvers.NoReverseMatch:
             # If this is a callable, re-raise.
             if callable(to):
                 raise
             # If this doesn't "feel" like a URL, re-raise.
-            if '/' not in to and '.' not in to:
+            if '/' not in to:
                 raise
+        else:
+            return self.response()
         
         # Finally, fall back and assume it's a URL
         self.redirect_data = to
-
+        return self.response()
 
     def extra(self, key, value):
         """ Send additional information to the browser. """
@@ -130,24 +132,25 @@ class AdjaxStore(object):
         return pformat(self._get_response_dict(include_messages))
 
 
-    def response(self, request, include_messages=False):
+    def response(self, include_messages=False):
         """ Renders the response using JSON, if appropriate.
         """
-        if request.is_ajax():
+        if self.request.is_ajax():
             return self.json_response(include_messages)
     
         else:
             # Try and redirect somewhere useful
-            redirect_to = None
-            if 'HTTP_REFERER' in request.META:
-                redirect_to = request.META['HTTP_REFERER']
-            elif DEFAULT_REDIRECT:
-                redirect_to = DEFAULT_REDIRECT
+            redirect_to = self.redirect_data
+            if redirect_to is None:
+                if 'HTTP_REFERER' in self.request.META:
+                    redirect_to = self.request.META['HTTP_REFERER']
+                elif DEFAULT_REDIRECT:
+                    redirect_to = DEFAULT_REDIRECT
             if ADJAX_DEBUG:
                 debug_template = 'adjax/debug.html'
-                context = RequestContext(request, 
+                context = RequestContext(self.request, 
                             {'store': self, 'redirect_to': redirect_to})
                 return django_render_to_response(debug_template, context_instance=context)
             if redirect_to:
-                return redirect(redirect_to)
+                return django_redirect(redirect_to)
             return HttpResponse()

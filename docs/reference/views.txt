@@ -163,8 +163,6 @@ Hiding/replacing HTML elements
     import adjax
 
     def my_view(request):
-        my_obj = MyModel.objects.get(pk=1)
-
         adjax.hide(request, 'sidebar')
         adjax.replace(request, 'title', 'Hello World')
         return adjax.response(request)
@@ -182,7 +180,5 @@ Re-Rendering of sections of a page
     import adjax
 
     def my_view(request):
-        my_obj = MyModel.objects.get(pk=1)
-
         adjax.render(request, 'my_app/template.html', {'title': 'Hello World'})
         return adjax.response(request)

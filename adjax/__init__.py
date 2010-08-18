@@ -4,7 +4,7 @@
 
 __all__ = ('adjax_response', 'success', 'info', 'warning', 'error', 'debug', 
            'redirect', 'update', 'form', 'replace', 'hide', 'extra',   
-           'render_to_response')
+           'render', 'render_to_response', 'response')
 
 __version_info__ = ('1', '0', '0')
 __version__ = '.'.join(__version_info__)
@@ -46,7 +46,7 @@ def replace(request, element, html):
 
 def redirect(request, path):
     """ Redirect the browser dynamically to another page. """
-    get_store(request).redirect(path)
+    return get_store(request).redirect(path)
 
 
 def hide(request, element):
@@ -63,11 +63,14 @@ def extra(request, key, value):
     get_store(request).extra(key, value)
 
 
-def render_to_response(request, template_name, context=None, prefix=None):
+def render(request, template_name, context=None, prefix=None):
     """ Update any included templates. """
     get_store(request).render_to_response(template_name, context, prefix)
+
+# For backwards compatibility, this is the old name 
+render_to_response = render
 
 
 def response(request, include_messages=False):
     """ Provide an appropriate HTTP response. """
-    return get_store(request).response(request, include_messages=include_messages)
+    return get_store(request).response(include_messages=include_messages)

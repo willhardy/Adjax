@@ -70,6 +70,11 @@ class BasicTests(TestCase):
         assert 'redirect' in data, repr(data)
         self.assertEqual(data['redirect'], reverse('do_nothing'))
 
+    def test_returning_redirect(self):
+        data = self.get_view('returning_redirect')
+        assert 'redirect' in data, repr(data)
+        self.assertEqual(data['redirect'], reverse('do_nothing'))
+
     def test_extra(self):
         data = self.get_view('extra')
         assert 'extra' in data, repr(data)

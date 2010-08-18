@@ -101,6 +101,10 @@ def do_everything(request):
     adjax.render_to_response(request, 'basic/_included.html', {'abc': 'mno456'}, prefix="tree")
     return {'one': 123}
 
+def returning_redirect(request):
+    """ A redirection can be returned as the response. """
+    return adjax.redirect(request, 'do_nothing')
+
 def alternative_response(request):
     """ Putting everything together. """
     adjax.replace(request, '#abc', 'Hello world')
