@@ -26,6 +26,7 @@ More information
 ================
 
 - :ref:`Best practice <topics-best-practices>`
+- :ref:`Adjax internals guide <reference-development>`
 
 Indices and tables
 ==================
