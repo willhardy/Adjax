@@ -150,13 +150,16 @@ Often an Ajax request will alter attribute values on a Django model. Adjax provi
 Hiding/replacing HTML elements
 ------------------------------
 
+
 .. function :: adjax.hide(request, element_name)
 
-    Ask the browser to hide the named element. 
+    Ask the browser to hide the given element. 
+    The given `element_name` as a CSS selector, for example ``#my-element-id``, ``.my-class``. 
 
 .. function :: adjax.replace(request, element_name, value)
 
-    Ask the browser to replace the named element with the given value.
+    Ask the browser to replace the given element with the given value.
+    The given `element_name` as a CSS selector, for example ``#my-element-id``, ``.my-class``. 
 
 .. code-block:: python
 
