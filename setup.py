@@ -16,7 +16,7 @@ setup(
     author = "Will Hardy",
     author_email = "adjax@hardysoftware.com.au",
     description = "A framework for easing the development of Django sites with Ajax.",
-    long_description = open('README.txt').read(),
+    long_description = open('README.rst').read(),
     license = "LICENSE.txt",
     keywords = "ajax, django, framework",
     url = "http://adjax.hardysoftware.com.au/",
