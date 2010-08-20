@@ -90,9 +90,18 @@ process_json_response = function(json) {
         }
     }
 
-/* Call a url that is served by an adjax decorated view */
+/* Call a url that is served by an adjax decorated view.
+ * Note that caching is turned off as Adjax usually runs through a Django view.
+ * IE is known to otherwise automatically cache Ajax responses.
+ */
 jQuery.adjax = function(url, data, callback) {
-    jQuery.getJSON(url, data, function(json) { process_json_response(json); if (callback) { callback(json); }});
+    jQuery.ajax({
+        url: url,
+        dataType: 'json',
+        data: data,
+        cache: false,
+        success: function(json) { process_json_response(json); if (callback) { callback(json); }}
+    });
     /* Return false to prevent any links from being followed */
     return false;
     }
