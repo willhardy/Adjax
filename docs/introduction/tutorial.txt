@@ -75,6 +75,12 @@ Users without Javascript
 If you can, turn off Javascript and reload the page. If your server is in ``DEBUG`` mode, clicking on the link will provide information on the Ajax response, as well as the url where non-javascript users will be redirected to. If a user does not have javascript enabled, the Ajax view will still be called (performing any relevant actions) and the user will be redirected to where they came from. The page refresh is slower than a partial, Ajax-based refresh, but it should show the equivalent information. This is known as graceful degredation and is 'built-in' to Adjax.
 
 
+More examples please
+--------------------
+More examples can be found in the test suite, which contains a working demonstration and tests of all of Adjax features.
+Play with the demonstation (``http://localhost:8000/demo``), have a read through the views and templates to see how it can be used.
+
+
 What else is possible?
 ----------------------
 
