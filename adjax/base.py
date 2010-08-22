@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from utils import get_key, JsonResponse, get_template_include_key
+from utils import get_key, JsonResponse, get_template_include_key, named_key
 from django.contrib import messages
 from django.core import urlresolvers
 from django.template.context import RequestContext
@@ -56,21 +56,33 @@ class AdjaxStore(object):
                     key = 'id_%s' % name
                 self.form_data[key] = errors
 
-    def replace(self, element, html):
+    def replace(self, element=None, html=None, name=None, value=None):
         """ Replace the given DOM element with the given html. 
             The DOM element is specified using css identifiers.
             Some javascript libraries may have an extended syntax, 
             which can be used if you don't value portability.
         """
-        self.replace_data[element] = html
+        if name is not None:
+            if value is None:
+                return TypeError('replace() takes two arguments, "value" parameter missing')
+            self.replace_data['.'+named_key(name)] = value
+        else:
+            if element is None or html is None:
+                return TypeError('replace() takes two arguments')
+            self.replace_data[element] = html
 
-    def hide(self, element):
+    def hide(self, element=None, name=None):
         """ Hides the given DOM element.
             The DOM element is specified using css identifiers.
             Some javascript libraries may have an extended syntax, 
             which can be used if you don't value portability.
         """
-        self.hide_data.append(element)
+        if name is not None:
+            self.hide_data.append('.'+named_key(name))
+        else:
+            if element is None:
+                return TypeError('replace() takes 1 argument, 0 provided.')
+            self.hide_data.append(element)
 
     def redirect(self, to, *args, **kwargs):
         """ Redirect the browser dynamically to another page. """

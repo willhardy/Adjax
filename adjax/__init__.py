@@ -35,13 +35,13 @@ def form(request, form_obj):
     get_store(request).form(form_obj)
 
 
-def replace(request, element, html):
+def replace(request, element=None, html=None, name=None, value=None):
     """ Replace the given DOM element with the given html. 
         The DOM element is specified using css identifiers.
         Some javascript libraries may have an extended syntax, 
         which can be used if you don't value portability.
     """
-    get_store(request).replace(element, html)
+    get_store(request).replace(element, html, name, value)
 
 
 def redirect(request, path):
@@ -49,13 +49,13 @@ def redirect(request, path):
     return get_store(request).redirect(path)
 
 
-def hide(request, element):
+def hide(request, element=None, name=None):
     """ Hides the given DOM element.
         The DOM element is specified using css identifiers.
         Some javascript libraries may have an extended syntax, 
         which can be used if you don't value portability.
     """
-    get_store(request).hide(element)
+    get_store(request).hide(element, name)
 
 
 def extra(request, key, value):

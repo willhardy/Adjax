@@ -2,7 +2,7 @@
 
 from django import template
 from django.template.loader import get_template
-from adjax.utils import get_key, get_template_include_key
+from adjax.utils import get_key, get_template_include_key, named_key
 from django.conf import settings
 
 
@@ -72,7 +72,25 @@ class AdjaxIncludeNode(template.Node):
             return '' # Like Django, fail silently for invalid included templates.
 
 
+def named_element(parser, token):
+    try:
+        tag_name, name = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError, "%r tag requires a single argument" % token.contents.split()[0]
+    return NamedElementNode(name)
+
+
+class NamedElementNode(template.Node):
+
+    def __init__(self, name):
+        self.name = template.Variable(name)
+
+    def render(self, context):
+        name = self.name.resolve(context)
+        return named_key(name)
+
 # Register our tags
 register.tag('adjax', adjax)
 register.tag('adjax_include', adjax_include)
+register.tag('named_element', named_element)
 

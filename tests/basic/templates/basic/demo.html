@@ -21,9 +21,9 @@
 
   <li><h3>Replace HTML content</h3>
   <p id="abc">waiting waiting</p>
-  <p id="{% named_element "named_abc" %}">waiting waiting</p>
+  <a class="update" href="{% url replace %}">Replace!</a>
   <p class="{% named_element "named_abc" %}">waiting waiting</p>
-  <a class="update" href="{% url replace %}">Replace!</a></li>
+  <a class="update" href="{% url named_replace %}">Replace!</a></li>
 
   <li><h3>Include and replace template content</h3>
   {% adjax_include "basic/_included.html" %}
@@ -33,7 +33,9 @@
 
   <li><h3>Hide HTML content</h3>
   <p id="xyz">Goodbye world</p>
-  <a class="update" href="{% url hide %}">Hide!</a></li>
+  <a class="update" href="{% url hide %}">Hide!</a>
+  <p class="{% named_element "named_xyz" %}">Goodbye world</p>
+  <a class="update" href="{% url named_hide %}">Hide!</a></li>
 
   <li><h3>Custom JS callback</h3>
   <p>My name is {% adjax my_obj.name %}.</p>

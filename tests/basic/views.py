@@ -27,7 +27,7 @@ def named_hide(request):
     """ Hide an HTML element, identified by a name 
         (requires {% named_element %} templatetag). 
     """
-    adjax.hide(request, name='named_abc')
+    adjax.hide(request, name='named_xyz')
     return adjax.response(request)   
 
 def messages(request):

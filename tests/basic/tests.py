@@ -9,7 +9,7 @@ from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
 
-from adjax.utils import get_key, get_template_include_key
+from adjax.utils import get_key, get_template_include_key, named_key
 from basic.models import MyModel
 
 class BasicTests(TestCase):
@@ -30,13 +30,13 @@ class BasicTests(TestCase):
         self.assert_value_in(self.get_view('replace'), 'Hello world', 'replace', '#abc')
 
     def test_named_replace(self):
-        self.assert_value_in(self.get_view('named_replace'), 'Named replace successful', 'replace', named_value('named_abc'))
+        self.assert_value_in(self.get_view('named_replace'), 'Named replace successful', 'replace', '.'+named_key('named_abc'))
 
     def test_hide(self):
         self.assert_value_in(self.get_view('hide'), '#xyz', 'hide', 0)
 
     def test_named_hide(self):
-        self.assert_value_in(self.get_view('named_hide'), named_value('named_abc'), 'hide', 0)
+        self.assert_value_in(self.get_view('named_hide'), '.'+named_key('named_xyz'), 'hide', 0)
 
     def test_messages(self):
         data = self.get_view('messages')

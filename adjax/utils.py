@@ -20,6 +20,14 @@ def get_key(instance, field_name):
     return '-'.join(('data', m.app_label, m.object_name, str(instance.pk), field_name))
 
 
+def named_key(name):
+    """ Get a valid element class name, we'll stick to ascii letters, numbers and hyphens.
+        NB class names cannot start with a hyphen
+    """
+    digest = int(hash_function(name).hexdigest(),16)
+    return 'n-%s' % base36.from_decimal(digest)
+
+
 def get_template_include_key(template_name, prefix=None):
     """ Get a valid element class name, we'll stick to ascii letters, numbers and hyphens.
         NB class names cannot start with a hyphen
