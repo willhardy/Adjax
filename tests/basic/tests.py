@@ -131,6 +131,13 @@ class BasicTests(TestCase):
         key = get_template_include_key('basic/_included.html', prefix="tree")
         self.assertContains(response, '<div class="%s"' % key)
 
+    def test_template_include_key_tag(self):
+        """ Checks that the template include key tag works correctly.
+        """
+        response = self.client.get(reverse('template_include_tag'))
+        key = get_template_include_key('basic/_included.html', prefix="tree")
+        self.assertContains(response, 'Key is "%s".' % key)
+
     def test_do_everything(self):
         """ A quick check on the ability to use all functionality at once. """
         data = self.get_view('do_everything')

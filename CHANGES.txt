@@ -3,8 +3,8 @@
  * Depreciated decorator approach, return adjax.response(request) in views
  * Redirects can be returned
  * adjaxify can now accept callback functions
- * TODO: Named HTML elements can be used, instead of referencing HTML classes and IDs in views (Hash substituted)
- * TODO: Hashes used for adjax.update(), instead of revealing information (pk, implementation details)
+ * Named HTML elements can be used, instead of referencing HTML classes and IDs in views (Hash substituted)
+ * Hashes used for adjax.update(), instead of revealing information (pk, implementation details)
  * TODO: Better form handling, single field validation
  * Comprehensive documentation!
 

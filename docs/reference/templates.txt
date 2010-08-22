@@ -10,7 +10,8 @@ you'll need to make use of some template tags.
 Data value updates
 ------------------
 
-Data elements can be marked for updating the ``{% adjax %}`` tag. Simply use the tag on a django object as you would when presenting the data using a ``{{ myobj }}`` variable tag. Filters are not yet supported.
+Data elements can be marked for updating the ``{% adjax %}`` tag. 
+Simply use the tag on a django object as you would when presenting the data using a ``{{ myobj }}`` variable tag. Filters are not yet supported.
 
 .. code-block:: html
 
@@ -22,12 +23,22 @@ The resulting HTML looks something like this:
 
 .. code-block:: html
 
-    <p>My name is <span class="data-basic-MyModel-23-name">Tree</span>.</p>
+    <p>My name is <span class="d-d2z8sbbs2b7p212yfno8mi81djjnbqf">Tree</span>.</p>
 
-Please do not rely on the generated class name being the way it is. 
-Aside from being unimportant (you wont need to use it directly), 
-future Adjax versions may use an entirely different format (for example, using a hash). 
-Also note that currently, details about your model instance (including the primary key) appear in the HTML output.
+To just get the value of the key used (for use in eg custom javascript processing of the returned data), use the ``{% adjax_key %}`` template tag:
+
+.. code-block:: html
+
+    {% load ajax %}
+
+    <p>The key is "{% adjax_key my_obj.name %}".</p>
+
+The resulting HTML looks something like this:
+
+.. code-block:: html
+
+    <p>The key is "d-d2z8sbbs2b7p212yfno8mi81djjnbqf".</p>
+
 
 Section Reloading (template inclusion)
 --------------------------------------
@@ -71,6 +82,21 @@ The following HTML is then generated:
     <span class="tpl-left-b4hf2396929rw5tjfaqni5077m41d2b"> 
       Here is the content of the included template.
     </span> 
+
+To just get the value of the key used (for use in eg custom javascript processing of the returned data), use the ``{% adjax_include_key %}`` template tag:
+
+.. code-block:: html
+
+    {% load ajax %}
+
+    <p>The key is: "{% adjax_include_key "myapp/template.html" prefix="left" %}"</p>
+
+The following HTML is then generated:
+
+.. code-block:: html
+
+    <p>The key is: "tpl-left-b4hf2396929rw5tjfaqni5077m41d2b"</p>
+
 
 
 Named elements
