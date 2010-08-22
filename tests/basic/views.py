@@ -10,11 +10,25 @@ import adjax
 def replace(request):
     """ Replace an HTML element """
     adjax.replace(request, '#abc', 'Hello world')
-   
+
+def named_replace(request):
+    """ Replace an HTML element, identified by a name 
+        (requires {% named_element %} templatetag). 
+    """
+    adjax.replace(request, name='named_abc', value='Named replace successful')
+    return adjax.response(request)   
+
 @adjax.adjax_response
 def hide(request):
     """ Hide an HTML element """
     adjax.hide(request, '#xyz')
+
+def named_hide(request):
+    """ Hide an HTML element, identified by a name 
+        (requires {% named_element %} templatetag). 
+    """
+    adjax.hide(request, name='named_abc')
+    return adjax.response(request)   
 
 def messages(request):
     """ Display some messages """

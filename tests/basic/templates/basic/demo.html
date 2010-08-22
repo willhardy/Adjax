@@ -21,6 +21,8 @@
 
   <li><h3>Replace HTML content</h3>
   <p id="abc">waiting waiting</p>
+  <p id="{% named_element "named_abc" %}">waiting waiting</p>
+  <p class="{% named_element "named_abc" %}">waiting waiting</p>
   <a class="update" href="{% url replace %}">Replace!</a></li>
 
   <li><h3>Include and replace template content</h3>

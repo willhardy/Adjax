@@ -21,6 +21,39 @@ The following common tasks are handled by the API:
 - Hiding/replacing HTML elements
 - Re-Rendering of sections of a page (template inclusion)
 
+Overview
+--------
+To use Adjax in your views, you only need to call one of the functions that prepare content (see below) and return ``adjax.response(request)``.
+For example:
+
+.. code-block:: python
+
+    import adjax
+
+    def my_view(request):
+        # Adds a "replace" directive to the prepared content
+        adjax.replace(request, 'h1', 'My new title')
+        
+        # Returns the prepared content as JSON data
+        return adjax.response(request)
+
+That's it. The resulting JSON encoded data will look something like this:
+
+.. code-block:: python
+
+    {
+    "replace": {
+        "h1": "My new title"
+    }
+    }
+
+The Adjax javascript library will understand this data and replace the relevant element as you asked it to. 
+In your view, you can add as many directives as you like, and they will all be returned together once your view function returns ``adjax.response(request)``.
+
+.. warning :: To avoid some browsers' caching of Ajax responses, a unique GET parameter is added to every Adjax request. 
+              If your code relies on ``request.GET`` being empty or containing only your own data, you will need to change it.
+
+
 User messages
 -------------
 Adjax makes use of Django's message framework, to avoid reinventing the wheel and to allow you to reuse any code on your site that makes use of Django's messages.
@@ -150,6 +183,27 @@ Often an Ajax request will alter attribute values on a Django model. Adjax provi
 Hiding/replacing HTML elements
 ------------------------------
 
+.. function :: adjax.hide(request, name=element_name)
+
+    Ask the browser to hide the given element. 
+    You will need to use the ``named_element`` template tag to mark the element with the same `element_name`
+
+.. function :: adjax.replace(request, name=element_name, value=value)
+
+    Ask the browser to replace the given element with the given value.
+    You will need to use the ``named_element`` template tag to mark the element with the same `element_name`
+
+.. code-block:: python
+
+    import adjax
+
+    def my_view(request):
+        adjax.hide(request, name='sidebar')
+        adjax.replace(request, name='title', value='Hello World')
+        return adjax.response(request)
+
+It is also possible to simply provide the `element_name` as a CSS selector, for example ``#my-element-id``, ``.my-class``. 
+If you do this, pass the `element_name` directly.
 
 .. function :: adjax.hide(request, element_name)
 

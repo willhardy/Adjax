@@ -1,17 +1,14 @@
-.. Adjax documentation master file, 
-   created by sphinx-quickstart on Sat May 15 11:27:50 2010.
-   This documentation is modelled on the Django documentation, partly for 
-   familiarity, partly because it's very well written.
-
 ===================
 Adjax Documentation
 ===================
 
+Adjax is a Django based framework, which facilitates and organises Ajax-enabled websites. 
+The aim is to keep code a clear interface for Ajax functionatliy, keeping your code clean and easy to follow.
 
 First steps
 ===========
 
-- :ref:`Overview <introduction-overview>`
+- :ref:`Background <introduction-background>`
 - :ref:`Installation <introduction-install>`
 - :ref:`Tutorial <introduction-tutorial>`
 
@@ -26,7 +23,7 @@ More information
 ================
 
 - :ref:`Best practice <topics-best-practices>`
-- :ref:`Adjax internals guide <reference-development>`
+- :ref:`Adjax internals guide <reference-developers>`
 
 Indices and tables
 ==================

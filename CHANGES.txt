@@ -1,7 +1,22 @@
 
+1.1 API cleanup and documentation (August 2010)
+ * Depreciated decorator approach, return adjax.response(request) in views
+ * Redirects can be returned
+ * adjaxify can now accept callback functions
+ * TODO: Named HTML elements can be used, instead of referencing HTML classes and IDs in views (Hash substituted)
+ * TODO: Hashes used for adjax.update(), instead of revealing information (pk, implementation details)
+ * TODO: Better form handling, single field validation
+ * Comprehensive documentation!
+
 1.0.1 Maintenance release   (May 2010)
  * Fixed problems with some installations of jQuery 4 (Issue #1)
  * Fixed setup.py install problems where easy_install is missing (Issue #2)
  * Fixed javascript error in IE7 caused by stray comma 
 
 1.0 Initial Release   (April 2010)
+
+
+===============================================================================
+
+X.0 Potential features (Future)
+ * TODO: Add delay to redirect

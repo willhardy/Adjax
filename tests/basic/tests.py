@@ -29,8 +29,14 @@ class BasicTests(TestCase):
     def test_replace(self):
         self.assert_value_in(self.get_view('replace'), 'Hello world', 'replace', '#abc')
 
+    def test_named_replace(self):
+        self.assert_value_in(self.get_view('named_replace'), 'Named replace successful', 'replace', named_value('named_abc'))
+
     def test_hide(self):
         self.assert_value_in(self.get_view('hide'), '#xyz', 'hide', 0)
+
+    def test_named_hide(self):
+        self.assert_value_in(self.get_view('named_hide'), named_value('named_abc'), 'hide', 0)
 
     def test_messages(self):
         data = self.get_view('messages')

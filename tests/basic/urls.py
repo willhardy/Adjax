@@ -5,6 +5,8 @@ from django.conf.urls.defaults import *
 urlpatterns = patterns('basic.views',
     url(r'^replace/$', 'replace', name="replace"),
     url(r'^hide/$', 'hide', name="hide"),
+    url(r'^named_replace/$', 'named_replace', name="named_replace"),
+    url(r'^named_hide/$', 'named_hide', name="named_hide"),
     url(r'^messages/$', 'messages', name="messages"),
     url(r'^update/$', 'update',  name="update"),
     url(r'^forms/$', 'forms',  name="forms"),

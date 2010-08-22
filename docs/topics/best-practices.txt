@@ -8,12 +8,28 @@ The following information is not specific to the Adjax framework, but rather use
 It is intended to provide helpful information for tackling scenarios that the Adjax library itself is not built do directly cater for.
 Put simply, it is a place for ideas, approaches and features that do not belong in a framework.
 
+Essential knowledge
+===================
+
+Some problems are universal and need to be considered by developers. 
+
+Browser Caching
+---------------
+
+Internet Explorer is known to cache Ajax GET requests, which can cause some issues if your responses change. There are a few approaches to this:
+
+- Use a POST request
+- Append a unique GET parameter
+- Use request headers (does not appear to work reliably)
+
+jQuery has a ``cache`` parameter for their ``$.ajax()`` function, which makes use of the second approach above. 
+Adjax consequently takes the same approach.
+
 Graceful degredation
---------------------
+====================
 To be completed...
 
 Performance Optimisation
-------------------------
+========================
 To be completed...
-
 
