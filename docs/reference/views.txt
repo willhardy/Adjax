@@ -202,8 +202,10 @@ Hiding/replacing HTML elements
         adjax.replace(request, name='title', value='Hello World')
         return adjax.response(request)
 
-It is also possible to simply provide the `element_name` as a CSS selector, for example ``#my-element-id``, ``.my-class``. 
-If you do this, pass the `element_name` directly.
+The keyword arguments are necessary, as the previous behaviour needs to be supported.
+Previously it was only possible to provide the `element_name` as a CSS selector, for example ``#my-element-id``, ``.my-class``. 
+If you do this, pass the `element_name` directly (without keyword arguments), but it is strongly advised to use the approach above, 
+and this direct approach my be deprecated in the future.
 
 .. function :: adjax.hide(request, element_name)
 
