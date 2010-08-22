@@ -71,3 +71,40 @@ The following HTML is then generated:
     <span class="tpl-left-b4hf2396929rw5tjfaqni5077m41d2b"> 
       Here is the content of the included template.
     </span> 
+
+
+Named elements
+--------------
+
+Adjax allows you to give HTML elements a name, which can be referred to in your views. 
+The name you choose is then encoded and can be used in the templates.
+This approach is encouraged, as opposed to refering to the html classes, IDs or elements directly in your python code. 
+There are a number of benefits:
+
+- HTML/CSS isn't constrained by the python code
+- HTML/CSS can be changed without changing or retesting the python code
+- The python code can be written without knowing the HTML structure or the names of classes
+- Names chosen to represent elements can be more meaningful to the python developer than existing classes
+
+Eventually this may become the only way to hide/replace HTML elements using the Adjax API.
+
+.. code-block:: html
+
+    {% load ajax %}
+
+    <span class="{% named_element "my special element" %}">Hello World</span>
+
+The following HTML is then generated:
+
+.. code-block:: html
+
+    <span class="n-puplfq3ch3bd9peq6212nk3tht5631y">Hello World</span> 
+
+And you can refer to your element in your view:
+
+.. code-block:: python
+
+    def my_view(request):
+        adjax.hide(name="my special element")
+        return adjax.response(request)
+
