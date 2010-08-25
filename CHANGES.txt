@@ -5,7 +5,6 @@
  * adjaxify can now accept callback functions
  * Named HTML elements can be used, instead of referencing HTML classes and IDs in views (Hash substituted)
  * Hashes used for adjax.update(), instead of revealing information (pk, implementation details)
- * TODO: Better form handling, single field validation
  * Comprehensive documentation!
  * Minimised and JSLinted javascript library
 

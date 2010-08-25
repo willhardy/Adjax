@@ -1,0 +1,7 @@
+include README.rst INSTALL.txt LICENSE.txt CHANGES.txt MANIFEST.in
+recursive-include docs *
+recursive-include tests/media *
+recursive-include tests/basic/templates *
+recursive-include tests/tutorial/templates *
+recursive-include adjax/media *
+recursive-include adjax/templates *

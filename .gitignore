@@ -1,2 +1,6 @@
 *.pyc
 docs/_build/*
+TODO
+build/*
+dist/*
+Adjax.egg-info/*
